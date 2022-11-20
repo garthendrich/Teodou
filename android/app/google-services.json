@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "32719981642",
+    "project_id": "cmsc23-project-69d2f",
+    "storage_bucket": "cmsc23-project-69d2f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:32719981642:android:10225e90d92500ea18aab3",
+        "android_client_info": {
+          "package_name": "com.example.shared_todo_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "32719981642-quv8kqqrdf1n05q5lub28iimik0mc0in.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOYFOxikUBko7KWW2PP0aZeYtuGmbTFrs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "32719981642-quv8kqqrdf1n05q5lub28iimik0mc0in.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
