@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:shared_todo_app/screens/home_page.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const SharedToDoApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class SharedToDoApp extends StatelessWidget {
+  const SharedToDoApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Shared To-Do App',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),

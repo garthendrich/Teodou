@@ -12,7 +12,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Shared To-do App")),
+      appBar: AppBar(title: const Text("Shared To-Do App")),
       body: ListView(
         children: _todosData.map((todoData) {
           return _buildTodoTile(todoData);
