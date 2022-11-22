@@ -1,8 +1,17 @@
+import "package:firebase_core/firebase_core.dart";
 import "package:flutter/material.dart";
+import "package:provider/provider.dart";
 
+import "package:shared_todo_app/firebase_options.dart";
+import "package:shared_todo_app/providers/auth_provider.dart";
+import "package:shared_todo_app/screens/home_page.dart";
 import "package:shared_todo_app/screens/login_page.dart";
 
-void main() {
+void main() async {
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(const SharedToDoApp());
 }
 
@@ -11,12 +20,28 @@ class SharedToDoApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "Shared To-Do App",
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: ((context) => AuthProvider())),
+      ],
+      child: MaterialApp(
+        title: "Shared To-Do App",
+        initialRoute: "/",
+        routes: {"/": (context) => const AuthWrapper()},
       ),
-      home: const LoginPage(),
     );
+  }
+}
+
+class AuthWrapper extends StatelessWidget {
+  const AuthWrapper({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    if (context.watch<AuthProvider>().isAuthenticated) {
+      return const HomePage();
+    } else {
+      return const LoginPage();
+    }
   }
 }

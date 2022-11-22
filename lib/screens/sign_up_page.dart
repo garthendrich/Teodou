@@ -1,4 +1,7 @@
 import "package:flutter/material.dart";
+import "package:provider/provider.dart";
+
+import "package:shared_todo_app/providers/auth_provider.dart";
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -15,6 +18,10 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
+    if (context.watch<AuthProvider>().isAuthenticated) {
+      Navigator.pop(context);
+    }
+
     return Scaffold(
       body: Center(
         child: ListView(
@@ -79,7 +86,14 @@ class _SignUpPageState extends State<SignUpPage> {
     return Padding(
       padding: const EdgeInsets.only(top: 24),
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: () {
+          context.read<AuthProvider>().signUp(
+                firstNameController.text,
+                lastNameController.text,
+                emailController.text,
+                passwordController.text,
+              );
+        },
         child: const Text("Create account"),
       ),
     );

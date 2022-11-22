@@ -1,13 +1,13 @@
 import "package:flutter/material.dart";
 
 class HomePage extends StatelessWidget {
-  final _todosData = [
+  static final _todosData = [
     {"title": "To-do 1", "isDone": false},
     {"title": "To-do 2", "isDone": false},
     {"title": "To-do 3", "isDone": true},
   ];
 
-  HomePage({Key? key}) : super(key: key);
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

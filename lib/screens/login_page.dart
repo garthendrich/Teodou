@@ -1,5 +1,7 @@
 import "package:flutter/material.dart";
+import "package:provider/provider.dart";
 
+import "package:shared_todo_app/providers/auth_provider.dart";
 import "package:shared_todo_app/screens/sign_up_page.dart";
 
 class LoginPage extends StatefulWidget {
@@ -59,7 +61,11 @@ class _LoginPageState extends State<LoginPage> {
     return Padding(
       padding: const EdgeInsets.only(top: 24),
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: () {
+          context
+              .read<AuthProvider>()
+              .signIn(emailController.text, passwordController.text);
+        },
         child: const Text("Sign In"),
       ),
     );
