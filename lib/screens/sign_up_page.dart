@@ -1,15 +1,15 @@
 import "package:flutter/material.dart";
 
-import "package:shared_todo_app/screens/sign_up_page.dart";
-
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+class SignUpPage extends StatefulWidget {
+  const SignUpPage({Key? key}) : super(key: key);
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<SignUpPage> createState() => _SignUpPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _SignUpPageState extends State<SignUpPage> {
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
@@ -22,16 +22,36 @@ class _LoginPageState extends State<LoginPage> {
           padding: const EdgeInsets.all(32),
           children: [
             const Text(
-              "Log In",
+              "Sign Up",
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 24),
             ),
+            _buildFirstNameField(),
+            _buildLastNameField(),
             _buildEmailField(),
             _buildPasswordField(),
-            _buildSignInButton(),
             _buildSignUpButton(),
+            _buildBackButton()
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildFirstNameField() {
+    return TextField(
+      controller: firstNameController,
+      decoration: const InputDecoration(
+        hintText: "First name",
+      ),
+    );
+  }
+
+  Widget _buildLastNameField() {
+    return TextField(
+      controller: lastNameController,
+      decoration: const InputDecoration(
+        hintText: "Last name",
       ),
     );
   }
@@ -55,26 +75,24 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _buildSignInButton() {
+  Widget _buildSignUpButton() {
     return Padding(
       padding: const EdgeInsets.only(top: 24),
       child: ElevatedButton(
         onPressed: () {},
-        child: const Text("Sign In"),
+        child: const Text("Create account"),
       ),
     );
   }
 
-  Widget _buildSignUpButton() {
+  Widget _buildBackButton() {
     return Padding(
       padding: const EdgeInsets.only(top: 8),
       child: TextButton(
         onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => const SignUpPage()),
-          );
+          Navigator.pop(context);
         },
-        child: const Text("Create an account"),
+        child: const Text("Already have an account"),
       ),
     );
   }
