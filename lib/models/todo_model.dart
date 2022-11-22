@@ -19,4 +19,13 @@ class ToDo {
       userId: json["userId"],
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "id": id,
+      "title": title,
+      "userId": userId,
+      "isDone": isDone,
+    };
+  }
 }

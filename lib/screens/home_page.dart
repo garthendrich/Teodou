@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:provider/provider.dart";
 
+import "package:shared_todo_app/components/todo_modal.dart";
 import "package:shared_todo_app/models/todo_model.dart";
 import "package:shared_todo_app/providers/auth_provider.dart";
 import "package:shared_todo_app/providers/todo_provider.dart";
@@ -18,6 +19,15 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text("Shared To-Do App")),
       body: _buildToDoList(toDosStream),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) => ToDoModal(type: "Add"),
+          );
+        },
+        child: const Icon(Icons.add_outlined),
+      ),
     );
   }
 
@@ -49,14 +59,14 @@ class HomePage extends StatelessWidget {
 
         return ListView(
           children: toDos.map((toDo) {
-            return _buildToDoTile(toDo);
+            return _buildToDoTile(toDo, context);
           }).toList(),
         );
       }),
     );
   }
 
-  Widget _buildToDoTile(ToDo toDo) {
+  Widget _buildToDoTile(ToDo toDo, BuildContext context) {
     return ListTile(
       title: Text(toDo.title),
       leading: Checkbox(
@@ -67,11 +77,21 @@ class HomePage extends StatelessWidget {
         children: [
           IconButton(
             icon: const Icon(Icons.create_outlined),
-            onPressed: () {},
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) => ToDoModal(toDo: toDo, type: "Edit"),
+              );
+            },
           ),
           IconButton(
             icon: const Icon(Icons.delete_outlined),
-            onPressed: () {},
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (context) => ToDoModal(toDo: toDo, type: "Delete"),
+              );
+            },
           )
         ],
       ),
