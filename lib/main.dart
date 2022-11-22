@@ -1,6 +1,5 @@
 import "package:flutter/material.dart";
 
-import "package:shared_todo_app/screens/home_page.dart";
 import "package:shared_todo_app/screens/login_page.dart";
 
 void main() {
@@ -17,7 +16,7 @@ class SharedToDoApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: HomePage(),
+      home: const LoginPage(),
     );
   }
 }
