@@ -30,6 +30,21 @@ class SharedToDoApp extends StatelessWidget {
         title: "Shared To-Do App",
         initialRoute: "/",
         routes: {"/": (context) => const AuthWrapper()},
+        theme: ThemeData(
+          primarySwatch: const MaterialColor(0xFF004643, {
+            50: Color(0xFFe6edec),
+            100: Color(0xFFccdad9),
+            200: Color(0xFF99b5b4),
+            300: Color(0xFF66908e),
+            400: Color(0xFF336b69),
+            500: Color(0xFF004643),
+            600: Color(0xFF003836),
+            700: Color(0xFF002a28),
+            800: Color(0xFF001c1b),
+            900: Color(0xFF000e0d),
+          }),
+          scaffoldBackgroundColor: const Color(0xFF004643),
+        ),
       ),
     );
   }

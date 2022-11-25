@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:provider/provider.dart";
 
+import "package:shared_todo_app/components/main_layout.dart";
 import "package:shared_todo_app/components/todo_modal.dart";
 import "package:shared_todo_app/models/todo_model.dart";
 import "package:shared_todo_app/providers/auth_provider.dart";
@@ -16,8 +17,15 @@ class HomePage extends StatelessWidget {
 
     final toDosStream = context.watch<ToDosProvider>().toDosStream;
 
-    return Scaffold(
-      appBar: AppBar(title: const Text("Shared To-Do App")),
+    return MainLayout(
+      head: Text(
+        "Hi, ${currentUser.displayName}!",
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
       body: _buildToDoList(toDosStream),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
