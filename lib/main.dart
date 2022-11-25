@@ -44,6 +44,11 @@ class SharedToDoApp extends StatelessWidget {
             900: Color(0xFF000e0d),
           }),
           scaffoldBackgroundColor: const Color(0xFF004643),
+          bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+            backgroundColor: Color(0xFF004643),
+            selectedItemColor: Colors.white,
+            unselectedItemColor: Colors.grey,
+          ),
         ),
       ),
     );

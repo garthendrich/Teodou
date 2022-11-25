@@ -4,14 +4,12 @@ class MainLayout extends StatelessWidget {
   final Widget head;
   final Widget body;
   final Widget? floatingActionButton;
-  final Widget? bottomNavigationBar;
 
   const MainLayout({
     Key? key,
     required this.head,
     required this.body,
     this.floatingActionButton,
-    this.bottomNavigationBar,
   }) : super(key: key);
 
   @override
@@ -33,18 +31,34 @@ class MainLayout extends StatelessWidget {
           ),
           Expanded(
             child: Container(
+              width: double.infinity,
               decoration: const BoxDecoration(
                 color: Color(0xFFFFFFFE),
                 borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
               ),
-              padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 20),
+              padding: const EdgeInsets.only(top: 24),
               child: body,
             ),
           )
         ],
       ),
       floatingActionButton: floatingActionButton,
-      bottomNavigationBar: bottomNavigationBar,
+      bottomNavigationBar: BottomNavigationBar(
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.list_alt),
+            label: "Home",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.groups),
+            label: "Friends",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_circle),
+            label: "Profile",
+          ),
+        ],
+      ),
     );
   }
 }
