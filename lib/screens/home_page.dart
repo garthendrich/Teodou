@@ -19,7 +19,7 @@ class HomePage extends StatelessWidget {
 
     return MainLayout(
       head: Text(
-        "Hi, ${currentUser.displayName}!",
+        "Hi, ${currentUser.firstName}!",
         style: const TextStyle(
           color: Colors.white,
           fontSize: 24,

@@ -1,16 +1,16 @@
 import "package:flutter/material.dart";
-import "package:firebase_auth/firebase_auth.dart";
 
 import "package:shared_todo_app/api/auth_api.dart";
+import "package:shared_todo_app/models/user_info_model.dart";
 
 class AuthProvider with ChangeNotifier {
   AuthApi authApi = AuthApi();
-  User? loggedInUser;
+  UserInfo? loggedInUser;
 
   AuthProvider() {
-    final loggedInUserStream = authApi.getLoggedInUser();
+    final loggedInUserStream = authApi.getLoggedInUserInfoStream();
     loggedInUserStream.listen(
-      (User? loggedInUser) {
+      (loggedInUser) {
         this.loggedInUser = loggedInUser;
         notifyListeners();
       },
