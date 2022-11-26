@@ -33,9 +33,24 @@ class MainLayout extends StatelessWidget {
           Expanded(
             child: Container(
               width: double.infinity,
-              decoration: const BoxDecoration(
-                color: Color(0xFFFFFFFE),
-                borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius:
+                    const BorderRadius.vertical(top: Radius.circular(16)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.white.withOpacity(0.1),
+                    offset: const Offset(0, -10),
+                    blurRadius: 15,
+                    spreadRadius: -3,
+                  ),
+                  BoxShadow(
+                    color: Colors.white.withOpacity(0.1),
+                    offset: const Offset(0, -4),
+                    blurRadius: 6,
+                    spreadRadius: -4,
+                  )
+                ],
               ),
               padding: const EdgeInsets.only(top: 24),
               child: body,
