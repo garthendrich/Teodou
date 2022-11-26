@@ -15,6 +15,7 @@ class MainLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.primary,
       appBar: AppBar(
         title: const Text(
           "Teodou",
@@ -44,6 +45,9 @@ class MainLayout extends StatelessWidget {
       ),
       floatingActionButton: floatingActionButton,
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.grey,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.list_alt),
