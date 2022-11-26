@@ -45,12 +45,14 @@ class MainLayout extends StatelessWidget {
       ),
       floatingActionButton: floatingActionButton,
       bottomNavigationBar: BottomNavigationBar(
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
         backgroundColor: Theme.of(context).colorScheme.primary,
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.grey,
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.list_alt),
+            icon: Icon(Icons.checklist),
             label: "Home",
           ),
           BottomNavigationBarItem(
