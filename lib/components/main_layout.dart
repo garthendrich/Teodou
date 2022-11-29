@@ -60,6 +60,18 @@ class MainLayout extends StatelessWidget {
       ),
       floatingActionButton: floatingActionButton,
       bottomNavigationBar: BottomNavigationBar(
+        onTap: (index) {
+          switch (index) {
+            case 0:
+              Navigator.pop(context);
+              Navigator.pushNamed(context, "/");
+              break;
+            case 1:
+              Navigator.pop(context);
+              Navigator.pushNamed(context, "/friends");
+              break;
+          }
+        },
         showSelectedLabels: false,
         showUnselectedLabels: false,
         backgroundColor: Theme.of(context).colorScheme.primary,

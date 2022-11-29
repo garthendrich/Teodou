@@ -5,6 +5,7 @@ import "package:provider/provider.dart";
 import "package:shared_todo_app/firebase_options.dart";
 import "package:shared_todo_app/providers/auth_provider.dart";
 import "package:shared_todo_app/providers/todo_provider.dart";
+import "package:shared_todo_app/screens/friends_page.dart";
 import "package:shared_todo_app/screens/home_page.dart";
 import "package:shared_todo_app/screens/login_page.dart";
 
@@ -29,7 +30,10 @@ class SharedToDoApp extends StatelessWidget {
       child: MaterialApp(
         title: "Shared To-Do App",
         initialRoute: "/",
-        routes: {"/": (context) => const AuthWrapper()},
+        routes: {
+          "/": (context) => const AuthWrapper(),
+          "/friends": (context) => const FriendsPage(),
+        },
         theme: ThemeData(
           colorScheme: ColorScheme.fromSwatch(
             primarySwatch: const MaterialColor(
