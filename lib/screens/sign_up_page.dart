@@ -11,10 +11,31 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  TextEditingController firstNameController = TextEditingController();
-  TextEditingController lastNameController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  final TextEditingController firstNameController = TextEditingController();
+  final TextEditingController lastNameController = TextEditingController();
+  final TextEditingController userNameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController locationController = TextEditingController();
+
+  final List<String> birthMonths = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December"
+  ];
+
+  String? selectedBirthMonth;
+  int? selectedBirthDay;
+  int? selectedBirthYear;
 
   @override
   Widget build(BuildContext context) {
@@ -33,10 +54,13 @@ class _SignUpPageState extends State<SignUpPage> {
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 24),
             ),
-            _buildFirstNameField(),
-            _buildLastNameField(),
+            const SizedBox(height: 16),
+            _buildFullNameFields(),
+            _buildUserNameField(),
             _buildEmailField(),
             _buildPasswordField(),
+            _buildBirthDateFields(),
+            _buildLocationField(),
             _buildSignUpButton(),
             _buildBackButton()
           ],
@@ -45,20 +69,31 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-  Widget _buildFirstNameField() {
-    return TextField(
-      controller: firstNameController,
-      decoration: const InputDecoration(
-        hintText: "First name",
-      ),
+  Widget _buildFullNameFields() {
+    return Row(
+      children: [
+        Expanded(
+          child: TextField(
+            controller: firstNameController,
+            decoration: const InputDecoration(labelText: "First name"),
+          ),
+        ),
+        const SizedBox(width: 16),
+        Expanded(
+          child: TextField(
+            controller: lastNameController,
+            decoration: const InputDecoration(labelText: "Last name"),
+          ),
+        ),
+      ],
     );
   }
 
-  Widget _buildLastNameField() {
+  Widget _buildUserNameField() {
     return TextField(
-      controller: lastNameController,
+      controller: userNameController,
       decoration: const InputDecoration(
-        hintText: "Last name",
+        labelText: "Username",
       ),
     );
   }
@@ -67,7 +102,7 @@ class _SignUpPageState extends State<SignUpPage> {
     return TextField(
       controller: emailController,
       decoration: const InputDecoration(
-        hintText: "Email",
+        labelText: "Email",
       ),
     );
   }
@@ -77,7 +112,89 @@ class _SignUpPageState extends State<SignUpPage> {
       controller: passwordController,
       obscureText: true,
       decoration: const InputDecoration(
-        hintText: "Password",
+        labelText: "Password",
+      ),
+    );
+  }
+
+  Widget _buildBirthDateFields() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text("Birthdate"),
+          Row(
+            children: [
+              Expanded(
+                flex: 2,
+                child: DropdownButton(
+                  hint: const Text("Month"),
+                  value: selectedBirthMonth,
+                  onChanged: (month) {
+                    setState(() {
+                      selectedBirthMonth = month!;
+                    });
+                  },
+                  items: birthMonths.map((birthMonth) {
+                    return DropdownMenuItem(
+                      value: birthMonth,
+                      child: Text(birthMonth),
+                    );
+                  }).toList(),
+                  isExpanded: true,
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: DropdownButton(
+                  hint: const Text("Day"),
+                  value: selectedBirthDay,
+                  onChanged: (day) {
+                    setState(() {
+                      selectedBirthDay = day!;
+                    });
+                  },
+                  items: List.generate(31, (number) {
+                    return DropdownMenuItem(
+                      value: number + 1,
+                      child: Text((number + 1).toString()),
+                    );
+                  }),
+                  isExpanded: true,
+                ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: DropdownButton(
+                  hint: const Text("Year"),
+                  value: selectedBirthYear,
+                  onChanged: (year) {
+                    setState(() {
+                      selectedBirthYear = year!;
+                    });
+                  },
+                  items: List.generate(150, (number) {
+                    return DropdownMenuItem(
+                      value: DateTime.now().year - number,
+                      child: Text((DateTime.now().year - number).toString()),
+                    );
+                  }),
+                  isExpanded: true,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLocationField() {
+    return TextField(
+      controller: locationController,
+      decoration: const InputDecoration(
+        labelText: "Location",
       ),
     );
   }
@@ -87,11 +204,20 @@ class _SignUpPageState extends State<SignUpPage> {
       padding: const EdgeInsets.only(top: 24),
       child: ElevatedButton(
         onPressed: () {
+          final birthDate = DateTime.utc(
+            selectedBirthYear!,
+            birthMonths.indexOf(selectedBirthMonth!) + 1,
+            selectedBirthDay!,
+          );
+
           context.read<AuthProvider>().signUp(
                 firstNameController.text,
                 lastNameController.text,
+                userNameController.text,
                 emailController.text,
                 passwordController.text,
+                birthDate,
+                locationController.text,
               );
         },
         child: const Text("Create account"),

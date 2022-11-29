@@ -1,3 +1,5 @@
+import "package:cloud_firestore/cloud_firestore.dart";
+
 class UserInfo {
   final String uid;
   final String firstName;
@@ -36,5 +38,19 @@ class UserInfo {
       receivedFriendRequestsIds: List.from(json["receivedFriendRequestsIds"]),
       sentFriendRequestsIds: List.from(json["sentFriendRequestsIds"]),
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "firstName": firstName,
+      "lastName": lastName,
+      "userName": userName,
+      "birthDate": Timestamp.fromDate(birthDate),
+      "location": location,
+      "email": email,
+      "friendsIds": friendsIds,
+      "receivedFriendRequestsIds": receivedFriendRequestsIds,
+      "sentFriendRequestsIds": sentFriendRequestsIds,
+    };
   }
 }

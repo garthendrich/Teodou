@@ -33,9 +33,20 @@ class AuthProvider with ChangeNotifier {
   Future signUp(
     String firstName,
     String lastName,
+    String userName,
     String email,
     String password,
+    DateTime birthDate,
+    String location,
   ) async {
-    await authApi.signUp(firstName, lastName, email, password);
+    await authApi.signUp(
+      firstName,
+      lastName,
+      userName,
+      email,
+      password,
+      birthDate,
+      location,
+    );
   }
 }

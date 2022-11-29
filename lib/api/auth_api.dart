@@ -57,8 +57,11 @@ class AuthApi {
   Future signUp(
     String firstName,
     String lastName,
+    String userName,
     String email,
     String password,
+    DateTime birthDate,
+    String location,
   ) async {
     try {
       final credential = await auth.createUserWithEmailAndPassword(
@@ -66,12 +69,22 @@ class AuthApi {
         password: password,
       );
 
-      await saveUserToFirestore(
-        credential.user!.uid,
-        firstName,
-        lastName,
-        email,
+      final userId = credential.user!.uid;
+
+      final newUser = user_info_model.UserInfo(
+        uid: userId,
+        firstName: firstName,
+        lastName: lastName,
+        userName: userName,
+        birthDate: birthDate,
+        location: location,
+        email: email,
+        friendsIds: [],
+        receivedFriendRequestsIds: [],
+        sentFriendRequestsIds: [],
       );
+
+      await saveUserToFirestore(userId, newUser);
     } on FirebaseAuthException catch (error) {
       print(error.code);
       print(error.message);
@@ -79,16 +92,9 @@ class AuthApi {
   }
 
   Future saveUserToFirestore(
-    String uid,
-    String firstName,
-    String lastName,
-    String email,
-  ) async {
+      String userId, user_info_model.UserInfo newUser) async {
     try {
-      await db
-          .collection("users")
-          .doc(uid)
-          .set({"firstName": firstName, "lastName": lastName, "email": email});
+      await db.collection("users").doc(userId).set(newUser.toJson());
     } on FirebaseException catch (error) {
       print(error.code);
       print(error.message);
