@@ -4,7 +4,7 @@ class ItemsStreamList extends StatelessWidget {
   final Stream<List<dynamic>>? stream;
   final String title;
   final String itemName;
-  final Function(dynamic) itemBuilder;
+  final Widget Function(dynamic) itemBuilder;
 
   const ItemsStreamList({
     Key? key,
@@ -47,10 +47,8 @@ class ItemsStreamList extends StatelessWidget {
               final items = snapshot.data!;
 
               return ListView(
-                children: [
-                  ...items.map(itemBuilder).toList(),
-                  const SizedBox(height: 80)
-                ],
+                padding: const EdgeInsets.only(left: 20, right: 20, bottom: 80),
+                children: items.map<Widget>(itemBuilder).toList(),
               );
             }),
           ),

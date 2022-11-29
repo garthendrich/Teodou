@@ -49,7 +49,7 @@ class HomePage extends StatelessWidget {
     return Card(
       color: const Color(0xFFEFF3F3),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+      margin: const EdgeInsets.symmetric(vertical: 8),
       elevation: 1,
       shadowColor: Theme.of(context).colorScheme.primary,
       child: ListTile(

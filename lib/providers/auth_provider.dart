@@ -49,4 +49,18 @@ class AuthProvider with ChangeNotifier {
       location,
     );
   }
+
+  Stream<List<UserInfo>>? getFriendsStream() {
+    print("possible update on friends list");
+
+    if (loggedInUser == null) {
+      return null;
+    }
+
+    if (loggedInUser!.friendsIds.isEmpty) {
+      return const Stream.empty();
+    }
+
+    return authApi.getUsersInfoStreamOf(loggedInUser!.friendsIds);
+  }
 }

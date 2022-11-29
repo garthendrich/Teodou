@@ -41,6 +41,27 @@ class AuthApi {
     }
   }
 
+  Stream<List<user_info_model.UserInfo>>? getUsersInfoStreamOf(
+    List<String> usersIds,
+  ) {
+    try {
+      final usersInfoSnapshotStream =
+          db.collection("users").where("uid", whereIn: usersIds).snapshots();
+
+      final usersInfoStream = usersInfoSnapshotStream.map((userInfoSnapshot) {
+        return userInfoSnapshot.docs.map((doc) {
+          return user_info_model.UserInfo.fromJson(doc.data());
+        }).toList();
+      });
+
+      return usersInfoStream;
+    } on FirebaseException catch (error) {
+      print("Error getting users info: [${error.code}] ${error.message}");
+    }
+
+    return null;
+  }
+
   Future signIn(String email, String password) async {
     try {
       await auth.signInWithEmailAndPassword(email: email, password: password);
