@@ -21,7 +21,15 @@ class TasksPage extends StatelessWidget {
       stream: toDosStream,
       title: "Your to-dos",
       itemName: "to-do",
-      itemBuilder: (items) => _buildToDoTile(items, context),
+      itemBuilder: (toDo) => _buildToDoTile(toDo, context),
+      itemsFilterHelper: (toDos, query) {
+        return toDos
+            .where(
+              (ToDo toDo) =>
+                  toDo.title.toLowerCase().contains(query.toLowerCase()),
+            )
+            .toList();
+      },
     );
   }
 

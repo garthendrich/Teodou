@@ -16,7 +16,16 @@ class FriendsPage extends StatelessWidget {
       stream: friendsStream,
       title: "Your friends",
       itemName: "friend",
-      itemBuilder: (items) => _buildFriendTile(items, context),
+      itemBuilder: (friend) => _buildFriendTile(friend, context),
+      itemsFilterHelper: (friends, query) {
+        return friends
+            .where(
+              (UserInfo friend) => (friend.userName + friend.fullName)
+                  .toLowerCase()
+                  .contains(query.toLowerCase()),
+            )
+            .toList();
+      },
     );
   }
 
