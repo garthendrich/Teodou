@@ -4,6 +4,7 @@ import "package:provider/provider.dart";
 import "package:shared_todo_app/components/items_stream_list.dart";
 import "package:shared_todo_app/models/user_info_model.dart";
 import "package:shared_todo_app/providers/auth_provider.dart";
+import "package:shared_todo_app/screens/friend_screen.dart";
 
 class FriendsPage extends StatelessWidget {
   const FriendsPage({Key? key}) : super(key: key);
@@ -44,6 +45,10 @@ class FriendsPage extends StatelessWidget {
         onPressed: () {
           showFriendActions(friend, context);
         },
+      ),
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => FriendScreen(user: friend)),
       ),
     );
   }
