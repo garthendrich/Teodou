@@ -8,13 +8,15 @@ import "package:shared_todo_app/providers/todo_provider.dart";
 class ToDoModal extends StatelessWidget {
   final ToDo? toDo;
   final String type;
-  final TextEditingController _titleFieldController = TextEditingController();
+  late final TextEditingController _titleFieldController;
 
   ToDoModal({
     super.key,
     this.toDo,
     required this.type,
-  });
+  }) {
+    _titleFieldController = TextEditingController(text: toDo?.title ?? "");
+  }
 
   Text _buildTitle() {
     switch (type) {

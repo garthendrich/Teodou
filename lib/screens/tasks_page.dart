@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 import "package:provider/provider.dart";
 
 import "package:shared_todo_app/components/items_stream_list.dart";
+import "package:shared_todo_app/components/todo_modal.dart";
 import "package:shared_todo_app/models/todo_model.dart";
 import "package:shared_todo_app/providers/auth_provider.dart";
 import "package:shared_todo_app/providers/todo_provider.dart";
@@ -58,35 +59,29 @@ class TasksPage extends StatelessWidget {
             return Theme.of(context).colorScheme.secondary;
           }),
         ),
-        trailing: PopupMenuButton(
-          icon: Icon(
-            Icons.more_horiz,
-            color: toDo.isDone
-                ? Theme.of(context).colorScheme.secondary
-                : Colors.grey,
-          ),
-          splashRadius: 24,
-          itemBuilder: (BuildContext context) => [
-            PopupMenuItem(
-              child: Wrap(
-                spacing: 8,
-                crossAxisAlignment: WrapCrossAlignment.center,
-                children: [
-                  const Icon(Icons.edit, size: 20),
-                  Text("Edit", style: TextStyle(color: Colors.grey[700]))
-                ],
-              ),
+        trailing: Wrap(
+          children: [
+            IconButton(
+              splashRadius: 24,
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => ToDoModal(type: "Edit", toDo: toDo),
+                );
+              },
+              icon: const Icon(Icons.edit_outlined),
             ),
-            PopupMenuItem(
-              child: Wrap(
-                spacing: 8,
-                crossAxisAlignment: WrapCrossAlignment.center,
-                children: const [
-                  Icon(Icons.delete, size: 20, color: Colors.red),
-                  Text("Delete", style: TextStyle(color: Colors.red))
-                ],
-              ),
-            ),
+            IconButton(
+              color: Colors.red,
+              splashRadius: 24,
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => ToDoModal(type: "Delete", toDo: toDo),
+                );
+              },
+              icon: const Icon(Icons.delete_outline),
+            )
           ],
         ),
       ),
