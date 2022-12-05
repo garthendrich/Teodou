@@ -6,8 +6,8 @@ import "package:shared_todo_app/firebase_options.dart";
 import "package:shared_todo_app/providers/auth_provider.dart";
 import "package:shared_todo_app/providers/todo_provider.dart";
 import "package:shared_todo_app/screens/friends_page.dart";
-import "package:shared_todo_app/screens/home_page.dart";
-import "package:shared_todo_app/screens/login_page.dart";
+import "package:shared_todo_app/screens/home_screen.dart";
+import "package:shared_todo_app/screens/login_screen.dart";
 
 void main() async {
   await Firebase.initializeApp(
@@ -69,7 +69,7 @@ class AuthWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (context.watch<AuthProvider>().isAuthenticated) {
-      return const HomePage();
+      return const HomeScreen();
     } else {
       return const LoginPage();
     }

@@ -2,7 +2,6 @@ import "package:flutter/material.dart";
 import "package:provider/provider.dart";
 
 import "package:shared_todo_app/components/items_stream_list.dart";
-import "package:shared_todo_app/components/main_layout.dart";
 import "package:shared_todo_app/models/user_info_model.dart";
 import "package:shared_todo_app/providers/auth_provider.dart";
 
@@ -13,23 +12,15 @@ class FriendsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final friendsStream = context.watch<AuthProvider>().getFriendsStream();
 
-    return MainLayout(
-      head: const Text(
-        "Friends",
-        style: TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
-      ),
-      body: ItemsStreamList(
-        stream: friendsStream,
-        title: "Your friends",
-        itemName: "friend",
-        itemBuilder: (items) => _buildFriendTile(items, context),
-      ),
+    return ItemsStreamList(
+      stream: friendsStream,
+      title: "Your friends",
+      itemName: "friend",
+      itemBuilder: (items) => _buildFriendTile(items, context),
     );
   }
 
   Widget _buildFriendTile(UserInfo friend, BuildContext context) {
-    print(friend.firstName);
-
     return ListTile(
       title: Text(
         "${friend.firstName} ${friend.lastName}",

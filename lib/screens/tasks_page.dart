@@ -2,14 +2,12 @@ import "package:flutter/material.dart";
 import "package:provider/provider.dart";
 
 import "package:shared_todo_app/components/items_stream_list.dart";
-import "package:shared_todo_app/components/main_layout.dart";
-import "package:shared_todo_app/components/todo_modal.dart";
 import "package:shared_todo_app/models/todo_model.dart";
 import "package:shared_todo_app/providers/auth_provider.dart";
 import "package:shared_todo_app/providers/todo_provider.dart";
 
-class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+class TasksPage extends StatelessWidget {
+  const TasksPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,30 +16,11 @@ class HomePage extends StatelessWidget {
 
     final toDosStream = context.watch<ToDosProvider>().toDosStream;
 
-    return MainLayout(
-      head: Text(
-        "Hi, ${currentUser.firstName}!",
-        style: const TextStyle(
-          color: Colors.white,
-          fontSize: 24,
-          fontWeight: FontWeight.w600,
-        ),
-      ),
-      body: ItemsStreamList(
-        stream: toDosStream,
-        title: "Your to-dos",
-        itemName: "to-do",
-        itemBuilder: (items) => _buildToDoTile(items, context),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) => ToDoModal(type: "Add"),
-          );
-        },
-        child: const Icon(Icons.add_outlined),
-      ),
+    return ItemsStreamList(
+      stream: toDosStream,
+      title: "Your to-dos",
+      itemName: "to-do",
+      itemBuilder: (items) => _buildToDoTile(items, context),
     );
   }
 
