@@ -7,8 +7,17 @@ import "package:shared_todo_app/providers/auth_provider.dart";
 import "package:shared_todo_app/screens/friends_page.dart";
 import "package:shared_todo_app/screens/tasks_page.dart";
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final _pageController = PageController();
+
+  int _pageIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +42,10 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
         body: PageView(
+          controller: _pageController,
+          onPageChanged: (newPageIndex) {
+            setState(() => _pageIndex = newPageIndex);
+          },
           children: const [TasksPage(), FriendsPage()],
         ),
       ),
@@ -46,7 +59,14 @@ class HomeScreen extends StatelessWidget {
         child: const Icon(Icons.add_outlined),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        onTap: (index) {},
+        currentIndex: _pageIndex,
+        onTap: (newPageIndex) {
+          _pageController.animateToPage(
+            newPageIndex,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.ease,
+          );
+        },
         showSelectedLabels: false,
         showUnselectedLabels: false,
         backgroundColor: Theme.of(context).colorScheme.primary,
