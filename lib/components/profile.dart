@@ -39,7 +39,9 @@ class Profile extends StatelessWidget {
                       color: Theme.of(context).colorScheme.secondary,
                     ),
                     horizontalTitleGap: 0,
-                    dense: true,
+                    visualDensity: const VisualDensity(
+                      vertical: VisualDensity.minimumDensity,
+                    ),
                   ),
                 )
                 .toList(),

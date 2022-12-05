@@ -4,22 +4,24 @@ import "package:provider/provider.dart";
 import "package:shared_todo_app/components/items_stream_list.dart";
 import "package:shared_todo_app/components/todo_modal.dart";
 import "package:shared_todo_app/models/todo_model.dart";
-import "package:shared_todo_app/providers/auth_provider.dart";
+import "package:shared_todo_app/models/user_info_model.dart";
 import "package:shared_todo_app/providers/todo_provider.dart";
 
-class TasksPage extends StatelessWidget {
-  const TasksPage({Key? key}) : super(key: key);
+class ToDosList extends StatelessWidget {
+  final UserInfo user;
+  final String title;
+
+  const ToDosList({Key? key, required this.user, required this.title})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final currentUser = context.read<AuthProvider>().loggedInUser;
-    context.read<ToDosProvider>().fetchToDosOf(currentUser!.uid);
-
+    context.read<ToDosProvider>().fetchToDosOf(user.uid);
     final toDosStream = context.watch<ToDosProvider>().toDosStream;
 
     return ItemsStreamList(
       stream: toDosStream,
-      title: "Your to-dos",
+      title: title,
       itemName: "to-do",
       itemBuilder: (toDo) => _buildToDoTile(toDo, context),
       itemsFilterHelper: (toDos, query) {

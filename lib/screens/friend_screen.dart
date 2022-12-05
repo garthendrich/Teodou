@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 
 import "package:shared_todo_app/components/profile.dart";
+import "package:shared_todo_app/components/todo_list.dart";
 import "package:shared_todo_app/models/user_info_model.dart";
 
 class FriendScreen extends StatelessWidget {
@@ -12,9 +13,19 @@ class FriendScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: ListView(
-        padding: const EdgeInsets.symmetric(vertical: 16),
-        children: [Profile(user: user)],
+      body: Padding(
+        padding: const EdgeInsets.only(top: 12),
+        child: Column(
+          children: [
+            Profile(user: user),
+            const SizedBox(height: 16),
+            const Divider(),
+            const SizedBox(height: 16),
+            Expanded(
+              child: ToDosList(user: user, title: "${user.firstName}'s to-dos"),
+            )
+          ],
+        ),
       ),
     );
   }

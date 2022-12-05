@@ -66,7 +66,7 @@ class _ItemsStreamListState extends State<ItemsStreamList> {
                   widget.itemsFilterHelper(items, _searchQuery);
 
               return ListView(
-                padding: const EdgeInsets.only(left: 20, right: 20, bottom: 80),
+                padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
                 children:
                     filteredItems.map<Widget>(widget.itemBuilder).toList(),
               );
