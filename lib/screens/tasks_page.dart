@@ -46,7 +46,9 @@ class TasksPage extends StatelessWidget {
         ),
         leading: Checkbox(
           value: toDo.isDone,
-          onChanged: (isChecked) {},
+          onChanged: (isChecked) {
+            context.read<ToDosProvider>().setIsDone(toDo, isChecked!);
+          },
           shape: const CircleBorder(),
           side: BorderSide(
             color: Theme.of(context).colorScheme.primary,

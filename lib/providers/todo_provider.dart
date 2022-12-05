@@ -12,14 +12,18 @@ class ToDosProvider with ChangeNotifier {
   }
 
   Future add(ToDo toDo) async {
-    await toDoApi.addToDo(toDo);
+    await toDoApi.add(toDo);
   }
 
-  Future editToDoTitle(ToDo toDo, String newTitle) async {
-    await toDoApi.editToDoTitle(toDo, newTitle);
+  Future editTitle(ToDo toDo, String newTitle) async {
+    await toDoApi.editTitle(toDo, newTitle);
   }
 
   Future delete(ToDo toDo) async {
-    await toDoApi.deleteToDo(toDo);
+    await toDoApi.delete(toDo);
+  }
+
+  Future setIsDone(ToDo toDo, bool isDone) async {
+    await toDoApi.setIsDone(toDo, isDone);
   }
 }

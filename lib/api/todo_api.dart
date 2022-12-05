@@ -23,7 +23,7 @@ class ToDoApi {
     }
   }
 
-  Future addToDo(ToDo toDo) async {
+  Future add(ToDo toDo) async {
     try {
       final docRef = await db.collection("todos").add(toDo.toJson());
       await db.collection("todos").doc(docRef.id).update({"id": docRef.id});
@@ -34,7 +34,7 @@ class ToDoApi {
     }
   }
 
-  Future editToDoTitle(ToDo toDo, String newTitle) async {
+  Future editTitle(ToDo toDo, String newTitle) async {
     try {
       await db.collection("todos").doc(toDo.id).update({"title": newTitle});
     } on FirebaseException catch (error) {
@@ -44,12 +44,22 @@ class ToDoApi {
     }
   }
 
-  Future deleteToDo(ToDo toDo) async {
+  Future delete(ToDo toDo) async {
     try {
       await db.collection("todos").doc(toDo.id).delete();
     } on FirebaseException catch (error) {
       print(
         "Error deleting to-do \"${toDo.title}\": [${error.code}] ${error.message}",
+      );
+    }
+  }
+
+  Future setIsDone(ToDo toDo, bool isDone) async {
+    try {
+      await db.collection("todos").doc(toDo.id).update({"isDone": isDone});
+    } on FirebaseException catch (error) {
+      print(
+        "Error marking \"${toDo.title}\" as done: [${error.code}] ${error.message}",
       );
     }
   }

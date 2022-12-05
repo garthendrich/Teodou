@@ -71,7 +71,7 @@ class ToDoModal extends StatelessWidget {
             {
               context
                   .read<ToDosProvider>()
-                  .editToDoTitle(toDo!, _titleFieldController.text);
+                  .editTitle(toDo!, _titleFieldController.text);
 
               break;
             }
