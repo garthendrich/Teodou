@@ -34,13 +34,39 @@ class _HomeScreenState extends State<HomeScreen> {
         elevation: 0,
       ),
       body: MainLayout(
-        head: Text(
-          "Hi, ${currentUser!.firstName}!",
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.w600,
-          ),
+        head: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              "Hi, ${currentUser!.firstName}!",
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            PopupMenuButton(
+              icon: const Icon(Icons.expand_more, color: Colors.white),
+              splashRadius: 24,
+              position: PopupMenuPosition.under,
+              offset: const Offset(0, 16),
+              itemBuilder: (BuildContext context) => [
+                PopupMenuItem(
+                  child: Row(
+                    children: [
+                      Icon(Icons.logout, size: 20, color: Colors.grey[700]),
+                      const SizedBox(width: 16),
+                      Text(
+                        "Sign out",
+                        style: TextStyle(color: Colors.grey[700]),
+                      )
+                    ],
+                  ),
+                  onTap: () => context.read<AuthProvider>().signOut(),
+                ),
+              ],
+            ),
+          ],
         ),
         body: PageView(
           controller: _pageController,
