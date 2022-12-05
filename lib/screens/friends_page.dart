@@ -23,7 +23,7 @@ class FriendsPage extends StatelessWidget {
   Widget _buildFriendTile(UserInfo friend, BuildContext context) {
     return ListTile(
       title: Text(
-        "${friend.firstName} ${friend.lastName}",
+        friend.fullName,
         style: const TextStyle(fontWeight: FontWeight.w500),
       ),
       subtitle: Text(

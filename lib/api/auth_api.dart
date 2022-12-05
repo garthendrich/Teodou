@@ -97,6 +97,7 @@ class AuthApi {
         firstName: firstName,
         lastName: lastName,
         userName: userName,
+        biography: "",
         birthDate: birthDate,
         location: location,
         email: email,
@@ -113,7 +114,9 @@ class AuthApi {
   }
 
   Future saveUserToFirestore(
-      String userId, user_info_model.UserInfo newUser) async {
+    String userId,
+    user_info_model.UserInfo newUser,
+  ) async {
     try {
       await db.collection("users").doc(userId).set(newUser.toJson());
     } on FirebaseException catch (error) {

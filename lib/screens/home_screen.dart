@@ -5,6 +5,7 @@ import "package:shared_todo_app/components/main_layout.dart";
 import "package:shared_todo_app/components/todo_modal.dart";
 import "package:shared_todo_app/providers/auth_provider.dart";
 import "package:shared_todo_app/screens/friends_page.dart";
+import "package:shared_todo_app/screens/profile_page.dart";
 import "package:shared_todo_app/screens/tasks_page.dart";
 
 class HomeScreen extends StatefulWidget {
@@ -46,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
           onPageChanged: (newPageIndex) {
             setState(() => _pageIndex = newPageIndex);
           },
-          children: const [TasksPage(), FriendsPage()],
+          children: const [TasksPage(), FriendsPage(), ProfilePage()],
         ),
       ),
       floatingActionButton: FloatingActionButton(

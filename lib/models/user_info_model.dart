@@ -5,6 +5,7 @@ class UserInfo {
   final String firstName;
   final String lastName;
   final String userName;
+  final String biography;
   final DateTime birthDate;
   final String location;
   final String email;
@@ -12,11 +13,36 @@ class UserInfo {
   final List<String> receivedFriendRequestsIds;
   final List<String> sentFriendRequestsIds;
 
+  get fullName => "$firstName $lastName";
+
+  get birthDateDisplay {
+    final List<String> birthMonths = [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December"
+    ];
+
+    final birthMonthDisplay = birthMonths[birthDate.month - 1];
+    final birthDayDisplay = birthDate.day.toString().padLeft(2, "0");
+
+    return "$birthMonthDisplay $birthDayDisplay, ${birthDate.year}";
+  }
+
   UserInfo({
     required this.uid,
     required this.firstName,
     required this.lastName,
     required this.userName,
+    required this.biography,
     required this.birthDate,
     required this.location,
     required this.email,
@@ -31,6 +57,7 @@ class UserInfo {
       firstName: json["firstName"],
       lastName: json["lastName"],
       userName: json["userName"],
+      biography: json["biography"],
       birthDate: json["birthDate"].toDate(),
       location: json["location"],
       email: json["email"],
@@ -45,6 +72,7 @@ class UserInfo {
       "firstName": firstName,
       "lastName": lastName,
       "userName": userName,
+      "biography": biography,
       "birthDate": Timestamp.fromDate(birthDate),
       "location": location,
       "email": email,
