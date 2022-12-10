@@ -69,6 +69,7 @@ class UserInfo {
 
   Map<String, dynamic> toJson() {
     return {
+      "uid": uid,
       "firstName": firstName,
       "lastName": lastName,
       "userName": userName,
