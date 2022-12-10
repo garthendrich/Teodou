@@ -63,4 +63,17 @@ class AuthProvider with ChangeNotifier {
 
     return authApi.getUsersInfoStreamOf(loggedInUser!.friendsIds);
   }
+
+  Stream<List<UserInfo>>? getFriendRequestsStream() {
+    if (loggedInUser == null) {
+      return null;
+    }
+
+    if (loggedInUser!.receivedFriendRequestsIds.isEmpty) {
+      return const Stream.empty();
+    }
+
+    return authApi
+        .getUsersInfoStreamOf(loggedInUser!.receivedFriendRequestsIds);
+  }
 }

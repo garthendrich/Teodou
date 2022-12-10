@@ -4,6 +4,7 @@ import "package:provider/provider.dart";
 import "package:shared_todo_app/components/items_stream_list.dart";
 import "package:shared_todo_app/models/user_info_model.dart";
 import "package:shared_todo_app/providers/auth_provider.dart";
+import "package:shared_todo_app/screens/friend_requests_screen.dart";
 import "package:shared_todo_app/screens/friend_screen.dart";
 
 class FriendsPage extends StatelessWidget {
@@ -45,7 +46,12 @@ class FriendsPage extends StatelessWidget {
             ),
             child: const Text("Friend requests"),
             onPressed: () {
-              // Navigator.pushNamed(context, "/friend-requests");
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const FriendRequestsScreen(),
+                ),
+              );
             },
           ),
         ),
@@ -55,15 +61,15 @@ class FriendsPage extends StatelessWidget {
           child: ItemsStreamList(
             stream: friendsStream,
             itemName: "friend",
-            itemBuilder: (friend) => _buildFriendTile(friend, context),
+            itemBuilder: (friend) => _buildFriendTile(context, friend),
             itemsFilterHelper: (friends, query) {
-              return friends
-                  .where(
-                    (UserInfo friend) => (friend.userName + friend.fullName)
-                        .toLowerCase()
-                        .contains(query.toLowerCase()),
-                  )
-                  .toList();
+              return friends.where(
+                (UserInfo friend) {
+                  return (friend.userName + friend.fullName)
+                      .toLowerCase()
+                      .contains(query.toLowerCase());
+                },
+              ).toList();
             },
           ),
         ),
@@ -71,7 +77,7 @@ class FriendsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildFriendTile(UserInfo friend, BuildContext context) {
+  Widget _buildFriendTile(BuildContext context, UserInfo friend) {
     return ListTile(
       title: Text(
         friend.fullName,
@@ -84,7 +90,7 @@ class FriendsPage extends StatelessWidget {
       trailing: IconButton(
         icon: const Icon(Icons.more_horiz),
         onPressed: () {
-          showFriendActions(friend, context);
+          showFriendActions(context, friend);
         },
       ),
       onTap: () {
@@ -96,7 +102,7 @@ class FriendsPage extends StatelessWidget {
     );
   }
 
-  showFriendActions(UserInfo friend, BuildContext context) {
+  showFriendActions(BuildContext context, UserInfo friend) {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
