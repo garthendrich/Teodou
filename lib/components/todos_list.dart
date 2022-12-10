@@ -10,9 +10,16 @@ import "package:shared_todo_app/providers/todo_provider.dart";
 class ToDosList extends StatelessWidget {
   final UserInfo user;
   final String title;
+  final bool willShowCheckbox;
+  final bool willShowDeleteButton;
 
-  const ToDosList({Key? key, required this.user, required this.title})
-      : super(key: key);
+  const ToDosList({
+    Key? key,
+    required this.user,
+    required this.title,
+    this.willShowCheckbox = true,
+    this.willShowDeleteButton = true,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -55,46 +62,58 @@ class ToDosList extends StatelessWidget {
                 : const TextStyle(),
           ),
         ),
-        leading: Checkbox(
-          value: toDo.isDone,
-          onChanged: (isChecked) {
-            context.read<ToDosProvider>().setIsDone(toDo, isChecked!);
-          },
-          shape: const CircleBorder(),
-          side: BorderSide(
-            color: Theme.of(context).colorScheme.primary,
-            width: 2,
-          ),
-          fillColor: MaterialStateProperty.resolveWith((states) {
-            return Theme.of(context).colorScheme.secondary;
-          }),
-        ),
+        leading: willShowCheckbox ? _buildCheckbox(context, toDo) : null,
         trailing: Wrap(
           children: [
-            IconButton(
-              splashRadius: 24,
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (context) => ToDoModal(type: "Edit", toDo: toDo),
-                );
-              },
-              icon: const Icon(Icons.edit_outlined),
-            ),
-            IconButton(
-              color: Colors.red,
-              splashRadius: 24,
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (context) => ToDoModal(type: "Delete", toDo: toDo),
-                );
-              },
-              icon: const Icon(Icons.delete_outline),
-            )
+            _buildEditButton(context, toDo),
+            if (willShowDeleteButton) _buildDeleteButton(context, toDo),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildCheckbox(BuildContext context, ToDo toDo) {
+    return Checkbox(
+      value: toDo.isDone,
+      onChanged: (isChecked) {
+        context.read<ToDosProvider>().setIsDone(toDo, isChecked!);
+      },
+      shape: const CircleBorder(),
+      side: BorderSide(
+        color: Theme.of(context).colorScheme.primary,
+        width: 2,
+      ),
+      fillColor: MaterialStateProperty.resolveWith((states) {
+        return Theme.of(context).colorScheme.secondary;
+      }),
+    );
+  }
+
+  Widget _buildEditButton(BuildContext context, ToDo toDo) {
+    return IconButton(
+      splashRadius: 24,
+      onPressed: () {
+        showDialog(
+          context: context,
+          builder: (context) => ToDoModal(type: "Edit", toDo: toDo),
+        );
+      },
+      icon: const Icon(Icons.edit_outlined),
+    );
+  }
+
+  Widget _buildDeleteButton(BuildContext context, ToDo toDo) {
+    return IconButton(
+      color: Colors.red,
+      splashRadius: 24,
+      onPressed: () {
+        showDialog(
+          context: context,
+          builder: (context) => ToDoModal(type: "Delete", toDo: toDo),
+        );
+      },
+      icon: const Icon(Icons.delete_outline),
     );
   }
 }

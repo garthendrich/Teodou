@@ -22,7 +22,12 @@ class FriendScreen extends StatelessWidget {
             const Divider(),
             const SizedBox(height: 16),
             Expanded(
-              child: ToDosList(user: user, title: "${user.firstName}'s to-dos"),
+              child: ToDosList(
+                user: user,
+                title: "${user.firstName}'s to-dos",
+                willShowCheckbox: false,
+                willShowDeleteButton: false,
+              ),
             )
           ],
         ),
