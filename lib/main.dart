@@ -9,6 +9,8 @@ import "package:shared_todo_app/screens/home_screen.dart";
 import "package:shared_todo_app/screens/login_screen.dart";
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
