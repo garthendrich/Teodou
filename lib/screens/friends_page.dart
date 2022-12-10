@@ -13,19 +13,61 @@ class FriendsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final friendsStream = context.watch<AuthProvider>().getFriendsStream();
 
-    return ItemsStreamList(
-      stream: friendsStream,
-      itemName: "friend",
-      itemBuilder: (friend) => _buildFriendTile(friend, context),
-      itemsFilterHelper: (friends, query) {
-        return friends
-            .where(
-              (UserInfo friend) => (friend.userName + friend.fullName)
-                  .toLowerCase()
-                  .contains(query.toLowerCase()),
-            )
-            .toList();
-      },
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                "Friends",
+                style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600),
+              ),
+              IconButton(
+                icon: const Icon(Icons.search),
+                onPressed: () {
+                  // context.read<UserSearchProvider>().resetSearch();
+                  // Navigator.pushNamed(context, "/search-users");
+                },
+              )
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: TextButton(
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.black,
+              backgroundColor: Colors.grey[300],
+              shape: const StadiumBorder(),
+            ),
+            child: const Text("Friend requests"),
+            onPressed: () {
+              // Navigator.pushNamed(context, "/friend-requests");
+            },
+          ),
+        ),
+        const Divider(color: Colors.grey),
+        const SizedBox(height: 8),
+        Expanded(
+          child: ItemsStreamList(
+            stream: friendsStream,
+            itemName: "friend",
+            itemBuilder: (friend) => _buildFriendTile(friend, context),
+            itemsFilterHelper: (friends, query) {
+              return friends
+                  .where(
+                    (UserInfo friend) => (friend.userName + friend.fullName)
+                        .toLowerCase()
+                        .contains(query.toLowerCase()),
+                  )
+                  .toList();
+            },
+          ),
+        ),
+      ],
     );
   }
 
@@ -45,10 +87,12 @@ class FriendsPage extends StatelessWidget {
           showFriendActions(friend, context);
         },
       ),
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => FriendScreen(user: friend)),
-      ),
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => FriendScreen(user: friend)),
+        );
+      },
     );
   }
 
