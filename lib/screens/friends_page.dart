@@ -15,7 +15,6 @@ class FriendsPage extends StatelessWidget {
 
     return ItemsStreamList(
       stream: friendsStream,
-      title: "Your friends",
       itemName: "friend",
       itemBuilder: (friend) => _buildFriendTile(friend, context),
       itemsFilterHelper: (friends, query) {

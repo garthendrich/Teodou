@@ -24,7 +24,6 @@ class FriendScreen extends StatelessWidget {
             Expanded(
               child: ToDosList(
                 user: user,
-                title: "${user.firstName}'s to-dos",
                 willShowCheckbox: false,
                 willShowDeleteButton: false,
               ),

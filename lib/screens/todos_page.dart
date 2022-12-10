@@ -11,6 +11,6 @@ class ToDosPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final currentUser = context.read<AuthProvider>().loggedInUser;
 
-    return ToDosList(user: currentUser!, title: "Your to-dos");
+    return ToDosList(user: currentUser!);
   }
 }

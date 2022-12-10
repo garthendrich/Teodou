@@ -9,14 +9,12 @@ import "package:shared_todo_app/providers/todo_provider.dart";
 
 class ToDosList extends StatelessWidget {
   final UserInfo user;
-  final String title;
   final bool willShowCheckbox;
   final bool willShowDeleteButton;
 
   const ToDosList({
     Key? key,
     required this.user,
-    required this.title,
     this.willShowCheckbox = true,
     this.willShowDeleteButton = true,
   }) : super(key: key);
@@ -28,7 +26,6 @@ class ToDosList extends StatelessWidget {
 
     return ItemsStreamList(
       stream: toDosStream,
-      title: title,
       itemName: "to-do",
       itemBuilder: (toDo) => _buildToDoTile(toDo, context),
       itemsFilterHelper: (toDos, query) {

@@ -2,7 +2,6 @@ import "package:flutter/material.dart";
 
 class ItemsStreamList extends StatefulWidget {
   final Stream<List<dynamic>>? stream;
-  final String title;
   final String itemName;
   final Widget Function(dynamic) itemBuilder;
   final List<dynamic> Function(dynamic, String) itemsFilterHelper;
@@ -10,7 +9,6 @@ class ItemsStreamList extends StatefulWidget {
   const ItemsStreamList({
     Key? key,
     required this.stream,
-    required this.title,
     required this.itemName,
     required this.itemBuilder,
     required this.itemsFilterHelper,
@@ -27,8 +25,6 @@ class _ItemsStreamListState extends State<ItemsStreamList> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(widget.title, style: const TextStyle(fontWeight: FontWeight.bold)),
-        const SizedBox(height: 16),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: TextField(
