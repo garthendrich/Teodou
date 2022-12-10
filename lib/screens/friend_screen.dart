@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 
 import "package:shared_todo_app/components/profile.dart";
-import "package:shared_todo_app/components/todo_list.dart";
+import "package:shared_todo_app/components/todos_list.dart";
 import "package:shared_todo_app/models/user_info_model.dart";
 
 class FriendScreen extends StatelessWidget {
