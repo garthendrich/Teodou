@@ -39,10 +39,6 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
-    if (context.watch<AuthProvider>().isAuthenticated) {
-      Navigator.pop(context);
-    }
-
     return Scaffold(
       body: Center(
         child: ListView(
@@ -204,25 +200,33 @@ class _SignUpPageState extends State<SignUpPage> {
       padding: const EdgeInsets.only(top: 24),
       child: ElevatedButton(
         onPressed: () {
-          final birthDate = DateTime.utc(
-            selectedBirthYear!,
-            birthMonths.indexOf(selectedBirthMonth!) + 1,
-            selectedBirthDay!,
-          );
-
-          context.read<AuthProvider>().signUp(
-                firstNameController.text,
-                lastNameController.text,
-                userNameController.text,
-                emailController.text,
-                passwordController.text,
-                birthDate,
-                locationController.text,
-              );
+          _signUp().then((_) {
+            if (context.read<AuthProvider>().isAuthenticated) {
+              Navigator.pop(context);
+            }
+          });
         },
         child: const Text("Create account"),
       ),
     );
+  }
+
+  _signUp() async {
+    final birthDate = DateTime.utc(
+      selectedBirthYear!,
+      birthMonths.indexOf(selectedBirthMonth!) + 1,
+      selectedBirthDay!,
+    );
+
+    await context.read<AuthProvider>().signUp(
+          firstNameController.text,
+          lastNameController.text,
+          userNameController.text,
+          emailController.text,
+          passwordController.text,
+          birthDate,
+          locationController.text,
+        );
   }
 
   Widget _buildBackButton() {
