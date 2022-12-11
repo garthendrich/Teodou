@@ -35,9 +35,7 @@ class FriendRequestsScreen extends StatelessWidget {
               itemsFilterHelper: (friendRequests, query) {
                 return friendRequests.where(
                   (UserInfo friendRequest) {
-                    return (friendRequest.userName + friendRequest.fullName)
-                        .toLowerCase()
-                        .contains(query.toLowerCase());
+                    return friendRequest.isMatchingName(query);
                   },
                 ).toList();
               },

@@ -4,14 +4,16 @@ class ItemsStreamList extends StatefulWidget {
   final Stream<List<dynamic>>? stream;
   final String itemName;
   final Widget Function(dynamic) itemBuilder;
-  final List<dynamic> Function(dynamic, String) itemsFilterHelper;
+  final bool showSearchFilter;
+  final List<dynamic> Function(dynamic, String)? itemsFilterHelper;
 
   const ItemsStreamList({
     Key? key,
     required this.stream,
     required this.itemName,
     required this.itemBuilder,
-    required this.itemsFilterHelper,
+    this.showSearchFilter = true,
+    this.itemsFilterHelper,
   }) : super(key: key);
 
   @override
@@ -25,13 +27,15 @@ class _ItemsStreamListState extends State<ItemsStreamList> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: TextField(
-            onChanged: (newText) => setState(() => _searchQuery = newText),
-            decoration: InputDecoration(hintText: "Search ${widget.itemName}s"),
+        if (widget.showSearchFilter)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: TextField(
+              onChanged: (newText) => setState(() => _searchQuery = newText),
+              decoration:
+                  InputDecoration(hintText: "Search ${widget.itemName}s"),
+            ),
           ),
-        ),
         const SizedBox(height: 16),
         Expanded(
           child: StreamBuilder(
@@ -48,6 +52,7 @@ class _ItemsStreamListState extends State<ItemsStreamList> {
 
               switch (snapshot.connectionState) {
                 case ConnectionState.none:
+                  return const Center();
                 case ConnectionState.waiting:
                   return const Center(child: CircularProgressIndicator());
                 default:
@@ -57,14 +62,15 @@ class _ItemsStreamListState extends State<ItemsStreamList> {
                 return Center(child: Text("No ${widget.itemName}s found"));
               }
 
-              final items = snapshot.data!;
-              final filteredItems =
-                  widget.itemsFilterHelper(items, _searchQuery);
+              List items = snapshot.data!;
+
+              if (widget.itemsFilterHelper != null) {
+                items = widget.itemsFilterHelper!(items, _searchQuery);
+              }
 
               return ListView(
                 padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
-                children:
-                    filteredItems.map<Widget>(widget.itemBuilder).toList(),
+                children: items.map<Widget>(widget.itemBuilder).toList(),
               );
             }),
           ),

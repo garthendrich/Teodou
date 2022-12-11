@@ -82,4 +82,13 @@ class UserInfo {
       "sentFriendRequestsIds": sentFriendRequestsIds,
     };
   }
+
+  bool isMatchingName(String query) {
+    final isMatchingFullName =
+        fullName.toLowerCase().contains(query.toLowerCase());
+    final isMatchingUserName =
+        userName.toLowerCase().contains(query.toLowerCase());
+
+    return isMatchingFullName || isMatchingUserName;
+  }
 }

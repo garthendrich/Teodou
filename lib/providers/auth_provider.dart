@@ -79,6 +79,28 @@ class AuthProvider with ChangeNotifier {
         .getUsersInfoStreamOf(loggedInUser!.receivedFriendRequestsIds);
   }
 
+  bool isLoggedInUser(UserInfo user) {
+    return loggedInUser != null ? loggedInUser!.uid == user.uid : false;
+  }
+
+  bool hasPendingFriendRequestFrom(UserInfo user) {
+    return loggedInUser != null
+        ? loggedInUser!.receivedFriendRequestsIds.contains(user.uid)
+        : false;
+  }
+
+  bool hasPendingFriendRequestTo(UserInfo user) {
+    return loggedInUser != null
+        ? loggedInUser!.sentFriendRequestsIds.contains(user.uid)
+        : false;
+  }
+
+  bool isFriendsWith(UserInfo user) {
+    return loggedInUser != null
+        ? loggedInUser!.friendsIds.contains(user.uid)
+        : false;
+  }
+
   Future acceptFriendRequestFrom(UserInfo user) async {
     if (loggedInUser != null) {
       await userApi.setAsFriends(loggedInUser!, user);
@@ -89,6 +111,24 @@ class AuthProvider with ChangeNotifier {
   Future rejectFriendRequestFrom(UserInfo user) async {
     if (loggedInUser != null) {
       await userApi.removeFriendRequest(user, loggedInUser!);
+    }
+  }
+
+  Future cancelFriendRequestTo(UserInfo user) async {
+    if (loggedInUser != null) {
+      await userApi.removeFriendRequest(loggedInUser!, user);
+    }
+  }
+
+  Future unfriend(UserInfo user) async {
+    if (loggedInUser != null) {
+      await userApi.unsetAsFriends(loggedInUser!, user);
+    }
+  }
+
+  Future sendFriendRequestTo(UserInfo user) async {
+    if (loggedInUser != null) {
+      await userApi.createFriendRequest(loggedInUser!, user);
     }
   }
 }

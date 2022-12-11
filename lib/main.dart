@@ -4,6 +4,7 @@ import "package:provider/provider.dart";
 
 import "package:shared_todo_app/firebase_options.dart";
 import "package:shared_todo_app/providers/auth_provider.dart";
+import "package:shared_todo_app/providers/search_provider.dart";
 import "package:shared_todo_app/providers/todo_provider.dart";
 import "package:shared_todo_app/screens/home_screen.dart";
 import "package:shared_todo_app/screens/login_screen.dart";
@@ -27,6 +28,7 @@ class SharedToDoApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: ((context) => AuthProvider())),
         ChangeNotifierProvider(create: ((context) => ToDosProvider())),
+        ChangeNotifierProvider(create: ((context) => SearchProvider())),
       ],
       child: MaterialApp(
         title: "Shared To-Do App",

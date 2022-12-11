@@ -123,6 +123,39 @@ class UserApi {
     }
   }
 
+  Stream<List>? getSearchedItemsStream(String searchQuery) {
+    final allUsersStream = getAllUsersInfoStream();
+    if (allUsersStream == null) {
+      print("Error searching users: \"$searchQuery\"");
+
+      return null;
+    }
+
+    final searchedUsersStream = allUsersStream.map((users) {
+      return users.where((user) => user.isMatchingName(searchQuery)).toList();
+    });
+
+    return searchedUsersStream;
+  }
+
+  Stream<List<user_info_model.UserInfo>>? getAllUsersInfoStream() {
+    try {
+      final allUsersSnapshotStream = db.collection("users").snapshots();
+
+      final allUsersStream = allUsersSnapshotStream.map((userSnapshot) {
+        return userSnapshot.docs
+            .map((doc) => user_info_model.UserInfo.fromJson(doc.data()))
+            .toList();
+      });
+
+      return allUsersStream;
+    } on FirebaseException catch (error) {
+      print("Error getting all users: [${error.code}] ${error.message}");
+    }
+
+    return null;
+  }
+
   Future removeFriendRequest(
     user_info_model.UserInfo sender,
     user_info_model.UserInfo receiver,
@@ -165,6 +198,52 @@ class UserApi {
     } on FirebaseException catch (error) {
       print(
         "Error setting user id ${user1.uid} and user id ${user2.uid} as friends: [${error.code}] ${error.message}",
+      );
+    }
+  }
+
+  Future unsetAsFriends(
+    user_info_model.UserInfo user1,
+    user_info_model.UserInfo user2,
+  ) async {
+    try {
+      await db.collection("users").doc(user1.uid).update({
+        "friendsIds": FieldValue.arrayRemove([user2.uid])
+      });
+
+      await db.collection("users").doc(user2.uid).update({
+        "friendsIds": FieldValue.arrayRemove([user1.uid])
+      });
+
+      print(
+        "Successfully unset user id ${user1.uid} and user id ${user2.uid} as friends",
+      );
+    } on FirebaseException catch (error) {
+      print(
+        "Error unsetting user id ${user1.uid} and user id ${user2.uid} as friends: [${error.code}] ${error.message}",
+      );
+    }
+  }
+
+  createFriendRequest(
+    user_info_model.UserInfo sender,
+    user_info_model.UserInfo receiver,
+  ) async {
+    try {
+      await db.collection("users").doc(sender.uid).update({
+        "sentFriendRequestsIds": FieldValue.arrayUnion([receiver.uid])
+      });
+
+      await db.collection("users").doc(receiver.uid).update({
+        "receivedFriendRequestsIds": FieldValue.arrayUnion([sender.uid])
+      });
+
+      print(
+        "Successfully sent friend request to user id ${receiver.uid} from user id ${sender.uid}",
+      );
+    } on FirebaseException catch (error) {
+      print(
+        "Error sending friend request to user id ${receiver.uid} from user id ${sender.uid}: [${error.code}] ${error.message}",
       );
     }
   }
