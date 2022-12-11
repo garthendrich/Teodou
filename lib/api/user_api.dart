@@ -3,7 +3,7 @@ import "package:firebase_auth/firebase_auth.dart";
 
 import "package:shared_todo_app/models/user_info_model.dart" as user_info_model;
 
-class AuthApi {
+class UserApi {
   final db = FirebaseFirestore.instance;
   final auth = FirebaseAuth.instance;
 

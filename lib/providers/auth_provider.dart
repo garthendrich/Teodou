@@ -2,21 +2,21 @@ import "dart:async";
 
 import "package:flutter/material.dart";
 
-import "package:shared_todo_app/api/auth_api.dart";
+import "package:shared_todo_app/api/user_api.dart";
 import "package:shared_todo_app/models/user_info_model.dart";
 
 class AuthProvider with ChangeNotifier {
-  AuthApi authApi = AuthApi();
+  UserApi userApi = UserApi();
   StreamSubscription<UserInfo>? _loggedInUserSubscription;
   UserInfo? loggedInUser;
 
   AuthProvider() {
-    final loggedInUserUidStream = authApi.getLoggedInUserUidStream();
+    final loggedInUserUidStream = userApi.getLoggedInUserUidStream();
     loggedInUserUidStream.listen(
       (loggedInUserUid) {
         if (loggedInUserUid != null) {
           final loggedInUserStream =
-              authApi.getUserInfoStreamOf(loggedInUserUid);
+              userApi.getUserInfoStreamOf(loggedInUserUid);
 
           _loggedInUserSubscription?.cancel();
 
@@ -35,11 +35,11 @@ class AuthProvider with ChangeNotifier {
   }
 
   Future signIn(String email, String password) async {
-    await authApi.signIn(email, password);
+    await userApi.signIn(email, password);
   }
 
   Future signOut() async {
-    await authApi.signOut();
+    await userApi.signOut();
   }
 
   Future signUp(
@@ -51,7 +51,7 @@ class AuthProvider with ChangeNotifier {
     DateTime birthDate,
     String location,
   ) async {
-    await authApi.signUp(
+    await userApi.signUp(
       firstName,
       lastName,
       userName,
@@ -67,7 +67,7 @@ class AuthProvider with ChangeNotifier {
       return null;
     }
 
-    return authApi.getUsersInfoStreamOf(loggedInUser!.friendsIds);
+    return userApi.getUsersInfoStreamOf(loggedInUser!.friendsIds);
   }
 
   Stream<List<UserInfo>>? getFriendRequestsStream() {
@@ -75,20 +75,20 @@ class AuthProvider with ChangeNotifier {
       return null;
     }
 
-    return authApi
+    return userApi
         .getUsersInfoStreamOf(loggedInUser!.receivedFriendRequestsIds);
   }
 
   Future acceptFriendRequestFrom(UserInfo user) async {
     if (loggedInUser != null) {
-      await authApi.setAsFriends(loggedInUser!, user);
-      await authApi.removeFriendRequest(user, loggedInUser!);
+      await userApi.setAsFriends(loggedInUser!, user);
+      await userApi.removeFriendRequest(user, loggedInUser!);
     }
   }
 
   Future rejectFriendRequestFrom(UserInfo user) async {
     if (loggedInUser != null) {
-      await authApi.removeFriendRequest(user, loggedInUser!);
+      await userApi.removeFriendRequest(user, loggedInUser!);
     }
   }
 }
