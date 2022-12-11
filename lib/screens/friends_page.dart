@@ -6,6 +6,7 @@ import "package:shared_todo_app/models/user_info_model.dart";
 import "package:shared_todo_app/providers/auth_provider.dart";
 import "package:shared_todo_app/screens/friend_requests_screen.dart";
 import "package:shared_todo_app/screens/friend_screen.dart";
+import "package:shared_todo_app/screens/search_screen.dart";
 
 class FriendsPage extends StatelessWidget {
   const FriendsPage({Key? key}) : super(key: key);
@@ -29,8 +30,13 @@ class FriendsPage extends StatelessWidget {
               IconButton(
                 icon: const Icon(Icons.search),
                 onPressed: () {
-                  // context.read<UserSearchProvider>().resetSearch();
-                  // Navigator.pushNamed(context, "/search-users");
+                  // context.read<SearchProvider>().resetSearch();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SearchScreen(),
+                    ),
+                  );
                 },
               )
             ],
