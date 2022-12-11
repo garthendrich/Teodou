@@ -7,34 +7,28 @@ class AuthApi {
   final db = FirebaseFirestore.instance;
   final auth = FirebaseAuth.instance;
 
-  Stream<user_info_model.UserInfo?> getLoggedInUserInfoStream() {
+  Stream<String?> getLoggedInUserUidStream() {
     final loggedInUserStream = auth.authStateChanges();
 
-    final loggedInUserInfoStream = loggedInUserStream.asyncMap((user) async {
+    final loggedInUserUidStream = loggedInUserStream.map((user) {
       if (user != null) {
-        return await getUserInfoOf(user);
+        return user.uid;
       }
     });
 
-    return loggedInUserInfoStream;
+    return loggedInUserUidStream;
   }
 
-  Future<user_info_model.UserInfo?> getUserInfoOf(User user) async {
+  Stream<user_info_model.UserInfo>? getUserInfoStreamOf(String userUid) {
     try {
-      final userInfoSnapshot = await db.collection("users").doc(user.uid).get();
+      final userInfoSnapshotStream =
+          db.collection("users").doc(userUid).snapshots();
 
-      Map<String, dynamic>? userInfoJson = userInfoSnapshot.data();
+      final userInfoStream = userInfoSnapshotStream.map((userInfoSnapshot) {
+        return user_info_model.UserInfo.fromJson(userInfoSnapshot.data()!);
+      });
 
-      if (userInfoJson == null) {
-        return null;
-      }
-
-      userInfoJson["uid"] = user.uid;
-      userInfoJson["email"] = user.email;
-
-      final userInfo = user_info_model.UserInfo.fromJson(userInfoJson);
-
-      return userInfo;
+      return userInfoStream;
     } on FirebaseException catch (error) {
       print("Error getting user info: [${error.code}] ${error.message}");
       return null;

@@ -1,3 +1,5 @@
+import "dart:async";
+
 import "package:flutter/material.dart";
 
 import "package:shared_todo_app/api/auth_api.dart";
@@ -5,16 +7,26 @@ import "package:shared_todo_app/models/user_info_model.dart";
 
 class AuthProvider with ChangeNotifier {
   AuthApi authApi = AuthApi();
+  StreamSubscription<UserInfo>? _loggedInUserSubscription;
   UserInfo? loggedInUser;
 
   AuthProvider() {
-    final loggedInUserStream = authApi.getLoggedInUserInfoStream();
-    loggedInUserStream.listen(
-      (loggedInUser) {
-        this.loggedInUser = loggedInUser;
-        notifyListeners();
+    final loggedInUserUidStream = authApi.getLoggedInUserUidStream();
+    loggedInUserUidStream.listen(
+      (loggedInUserUid) {
+        if (loggedInUserUid != null) {
+          final loggedInUserStream =
+              authApi.getUserInfoStreamOf(loggedInUserUid);
+
+          _loggedInUserSubscription?.cancel();
+
+          _loggedInUserSubscription =
+              loggedInUserStream?.listen((loggedInUser) {
+            this.loggedInUser = loggedInUser;
+            notifyListeners();
+          });
+        }
       },
-      onError: (error) {},
     );
   }
 
