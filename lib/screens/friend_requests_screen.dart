@@ -91,9 +91,9 @@ class FriendRequestsScreen extends StatelessWidget {
             ),
             child: const Text("Confirm"),
             onPressed: () {
-              // context
-              //     .read<AuthProvider>()
-              //     .acceptFriendRequestFrom(friendRequest);
+              context
+                  .read<AuthProvider>()
+                  .acceptFriendRequestFrom(friendRequest);
             },
           ),
         ),
@@ -109,9 +109,9 @@ class FriendRequestsScreen extends StatelessWidget {
             ),
             child: const Text("Delete"),
             onPressed: () {
-              // context
-              //     .read<AuthProvider>()
-              //     .rejectFriendRequestFrom(friendRequest);
+              context
+                  .read<AuthProvider>()
+                  .rejectFriendRequestFrom(friendRequest);
             },
           ),
         )

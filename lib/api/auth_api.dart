@@ -122,4 +122,50 @@ class AuthApi {
       print(error.message);
     }
   }
+
+  Future removeFriendRequest(
+    user_info_model.UserInfo sender,
+    user_info_model.UserInfo receiver,
+  ) async {
+    try {
+      await db.collection("users").doc(sender.uid).update({
+        "sentFriendRequestsIds": FieldValue.arrayRemove([receiver.uid])
+      });
+
+      await db.collection("users").doc(receiver.uid).update({
+        "receivedFriendRequestsIds": FieldValue.arrayRemove([sender.uid])
+      });
+
+      print(
+        "Successfully rejected friend request of user id ${sender.uid} to user id ${receiver.uid}",
+      );
+    } on FirebaseException catch (error) {
+      print(
+        "Error rejecting friend request of user id ${sender.uid} to user id ${receiver.uid}: [${error.code}] ${error.message}",
+      );
+    }
+  }
+
+  Future setAsFriends(
+    user_info_model.UserInfo user1,
+    user_info_model.UserInfo user2,
+  ) async {
+    try {
+      await db.collection("users").doc(user1.uid).update({
+        "friendsIds": FieldValue.arrayUnion([user2.uid])
+      });
+
+      await db.collection("users").doc(user2.uid).update({
+        "friendsIds": FieldValue.arrayUnion([user1.uid])
+      });
+
+      print(
+        "Successfully set user id ${user1.uid} and user id ${user2.uid} as friends",
+      );
+    } on FirebaseException catch (error) {
+      print(
+        "Error setting user id ${user1.uid} and user id ${user2.uid} as friends: [${error.code}] ${error.message}",
+      );
+    }
+  }
 }

@@ -78,4 +78,17 @@ class AuthProvider with ChangeNotifier {
     return authApi
         .getUsersInfoStreamOf(loggedInUser!.receivedFriendRequestsIds);
   }
+
+  Future acceptFriendRequestFrom(UserInfo user) async {
+    if (loggedInUser != null) {
+      await authApi.setAsFriends(loggedInUser!, user);
+      await authApi.removeFriendRequest(user, loggedInUser!);
+    }
+  }
+
+  Future rejectFriendRequestFrom(UserInfo user) async {
+    if (loggedInUser != null) {
+      await authApi.removeFriendRequest(user, loggedInUser!);
+    }
+  }
 }
