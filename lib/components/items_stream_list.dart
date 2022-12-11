@@ -53,7 +53,7 @@ class _ItemsStreamListState extends State<ItemsStreamList> {
                 default:
               }
 
-              if (!snapshot.hasData) {
+              if (!snapshot.hasData || snapshot.data!.isEmpty) {
                 return Center(child: Text("No ${widget.itemName}s found"));
               }
 

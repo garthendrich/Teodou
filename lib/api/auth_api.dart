@@ -38,6 +38,10 @@ class AuthApi {
   Stream<List<user_info_model.UserInfo>>? getUsersInfoStreamOf(
     List<String> usersIds,
   ) {
+    if (usersIds.isEmpty) {
+      return Stream.value([]);
+    }
+
     try {
       final usersInfoSnapshotStream =
           db.collection("users").where("uid", whereIn: usersIds).snapshots();
