@@ -34,12 +34,12 @@ class ToDoApi {
     }
   }
 
-  Future editTitle(ToDo toDo, String newTitle) async {
+  Future edit(ToDo toDo, Map<String, dynamic> newToDoDetails) async {
     try {
-      await db.collection("todos").doc(toDo.id).update({"title": newTitle});
+      await db.collection("todos").doc(toDo.id).update(newToDoDetails);
     } on FirebaseException catch (error) {
       print(
-        "Error editing to-do from \"${toDo.title}\" to \"$newTitle\": [${error.code}] ${error.message}",
+        "Error editing to-do \"${toDo.title}\": [${error.code}] ${error.message}",
       );
     }
   }

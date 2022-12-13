@@ -15,8 +15,8 @@ class ToDosProvider with ChangeNotifier {
     await toDoApi.add(toDo);
   }
 
-  Future editTitle(ToDo toDo, String newTitle) async {
-    await toDoApi.editTitle(toDo, newTitle);
+  Future edit(ToDo toDo, Map<String, dynamic> newToDoDetails) async {
+    await toDoApi.edit(toDo, newToDoDetails);
   }
 
   Future delete(ToDo toDo) async {

@@ -6,6 +6,7 @@ import "package:shared_todo_app/components/todo_modal.dart";
 import "package:shared_todo_app/models/todo_model.dart";
 import "package:shared_todo_app/models/user_info_model.dart";
 import "package:shared_todo_app/providers/todo_provider.dart";
+import "package:shared_todo_app/utils/format_deadline.dart";
 
 class ToDosList extends StatelessWidget {
   final UserInfo user;
@@ -27,7 +28,7 @@ class ToDosList extends StatelessWidget {
     return ItemsStreamList(
       stream: toDosStream,
       itemName: "to-do",
-      itemBuilder: (toDo) => _buildToDoTile(toDo, context),
+      itemBuilder: (toDo) => _buildToDoTile(context, toDo),
       itemsFilterHelper: (toDos, query) {
         return toDos
             .where(
@@ -39,7 +40,7 @@ class ToDosList extends StatelessWidget {
     );
   }
 
-  Widget _buildToDoTile(ToDo toDo, BuildContext context) {
+  Widget _buildToDoTile(BuildContext context, ToDo toDo) {
     return Card(
       color: const Color(0xFFEFF3F3),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
@@ -49,15 +50,7 @@ class ToDosList extends StatelessWidget {
       child: ListTile(
         title: Padding(
           padding: const EdgeInsets.symmetric(vertical: 8),
-          child: Text(
-            toDo.title,
-            style: toDo.isDone
-                ? TextStyle(
-                    color: Theme.of(context).colorScheme.secondary,
-                    decoration: TextDecoration.lineThrough,
-                  )
-                : const TextStyle(),
-          ),
+          child: _buildToDoTileContent(context, toDo),
         ),
         leading: willShowCheckbox ? _buildCheckbox(context, toDo) : null,
         trailing: Wrap(
@@ -67,6 +60,39 @@ class ToDosList extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildToDoTileContent(BuildContext context, ToDo toDo) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          toDo.title,
+          style: !toDo.isDone
+              ? null
+              : TextStyle(
+                  color: Theme.of(context).colorScheme.secondary,
+                  decoration: TextDecoration.lineThrough,
+                ),
+        ),
+        if (!toDo.isDone && toDo.description.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.only(top: 4),
+            child: Text(
+              toDo.description,
+              style: TextStyle(color: Colors.grey[600], fontSize: 14),
+            ),
+          ),
+        if (!toDo.isDone && toDo.deadline != null)
+          Chip(
+            avatar: Icon(
+              Icons.event,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+            label: Text(formatDeadline(toDo.deadline!)),
+          )
+      ],
     );
   }
 

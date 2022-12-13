@@ -1,13 +1,19 @@
+import "package:cloud_firestore/cloud_firestore.dart";
+
 class ToDo {
   final String? id;
-  String title;
-  bool isDone;
+  final String title;
+  final String description;
+  final DateTime? deadline;
+  final bool isDone;
   final String userId;
 
   ToDo({
     this.id,
     required this.title,
-    required this.isDone,
+    this.description = "",
+    this.deadline,
+    this.isDone = false,
     required this.userId,
   });
 
@@ -15,6 +21,8 @@ class ToDo {
     return ToDo(
       id: json["id"],
       title: json["title"],
+      description: json["description"],
+      deadline: json["deadline"]?.toDate(),
       isDone: json["isDone"],
       userId: json["userId"],
     );
@@ -24,8 +32,10 @@ class ToDo {
     return {
       "id": id,
       "title": title,
-      "userId": userId,
+      "description": description,
+      if (deadline != null) "deadline": Timestamp.fromDate(deadline!),
       "isDone": isDone,
+      "userId": userId,
     };
   }
 }

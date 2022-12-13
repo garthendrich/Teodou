@@ -62,6 +62,12 @@ class SharedToDoApp extends StatelessWidget {
             contentPadding: EdgeInsets.all(12),
             isDense: true,
           ),
+          chipTheme: ChipThemeData(
+            backgroundColor: Colors.transparent,
+            side: BorderSide(color: Colors.grey.shade300),
+            iconTheme: const IconThemeData(size: 20),
+            labelPadding: const EdgeInsets.symmetric(horizontal: 4),
+          ),
         ),
       ),
     );
