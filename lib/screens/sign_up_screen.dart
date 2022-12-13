@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:provider/provider.dart";
 
+import "package:shared_todo_app/components/date_select.dart";
 import "package:shared_todo_app/providers/auth_provider.dart";
 
 class SignUpPage extends StatefulWidget {
@@ -11,31 +12,14 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  final TextEditingController firstNameController = TextEditingController();
-  final TextEditingController lastNameController = TextEditingController();
-  final TextEditingController userNameController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  final TextEditingController locationController = TextEditingController();
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _userNameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _locationController = TextEditingController();
 
-  final List<String> birthMonths = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December"
-  ];
-
-  String? selectedBirthMonth;
-  int? selectedBirthDay;
-  int? selectedBirthYear;
+  DateTime _birthDate = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -70,14 +54,14 @@ class _SignUpPageState extends State<SignUpPage> {
       children: [
         Expanded(
           child: TextField(
-            controller: firstNameController,
+            controller: _firstNameController,
             decoration: const InputDecoration(labelText: "First name"),
           ),
         ),
         const SizedBox(width: 16),
         Expanded(
           child: TextField(
-            controller: lastNameController,
+            controller: _lastNameController,
             decoration: const InputDecoration(labelText: "Last name"),
           ),
         ),
@@ -87,7 +71,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Widget _buildUserNameField() {
     return TextField(
-      controller: userNameController,
+      controller: _userNameController,
       decoration: const InputDecoration(
         labelText: "Username",
       ),
@@ -96,7 +80,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Widget _buildEmailField() {
     return TextField(
-      controller: emailController,
+      controller: _emailController,
       decoration: const InputDecoration(
         labelText: "Email",
       ),
@@ -105,7 +89,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Widget _buildPasswordField() {
     return TextField(
-      controller: passwordController,
+      controller: _passwordController,
       obscureText: true,
       decoration: const InputDecoration(
         labelText: "Password",
@@ -120,66 +104,10 @@ class _SignUpPageState extends State<SignUpPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text("Birthdate"),
-          Row(
-            children: [
-              Expanded(
-                flex: 2,
-                child: DropdownButton(
-                  hint: const Text("Month"),
-                  value: selectedBirthMonth,
-                  onChanged: (month) {
-                    setState(() {
-                      selectedBirthMonth = month!;
-                    });
-                  },
-                  items: birthMonths.map((birthMonth) {
-                    return DropdownMenuItem(
-                      value: birthMonth,
-                      child: Text(birthMonth),
-                    );
-                  }).toList(),
-                  isExpanded: true,
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: DropdownButton(
-                  hint: const Text("Day"),
-                  value: selectedBirthDay,
-                  onChanged: (day) {
-                    setState(() {
-                      selectedBirthDay = day!;
-                    });
-                  },
-                  items: List.generate(31, (number) {
-                    return DropdownMenuItem(
-                      value: number + 1,
-                      child: Text((number + 1).toString()),
-                    );
-                  }),
-                  isExpanded: true,
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: DropdownButton(
-                  hint: const Text("Year"),
-                  value: selectedBirthYear,
-                  onChanged: (year) {
-                    setState(() {
-                      selectedBirthYear = year!;
-                    });
-                  },
-                  items: List.generate(150, (number) {
-                    return DropdownMenuItem(
-                      value: DateTime.now().year - number,
-                      child: Text((DateTime.now().year - number).toString()),
-                    );
-                  }),
-                  isExpanded: true,
-                ),
-              ),
-            ],
+          DateSelect(
+            onChanged: (birthDate) {
+              setState(() => _birthDate = birthDate);
+            },
           ),
         ],
       ),
@@ -188,7 +116,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Widget _buildLocationField() {
     return TextField(
-      controller: locationController,
+      controller: _locationController,
       decoration: const InputDecoration(
         labelText: "Location",
       ),
@@ -212,20 +140,14 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   _signUp() async {
-    final birthDate = DateTime.utc(
-      selectedBirthYear!,
-      birthMonths.indexOf(selectedBirthMonth!) + 1,
-      selectedBirthDay!,
-    );
-
     await context.read<AuthProvider>().signUp(
-          firstNameController.text,
-          lastNameController.text,
-          userNameController.text,
-          emailController.text,
-          passwordController.text,
-          birthDate,
-          locationController.text,
+          _firstNameController.text,
+          _lastNameController.text,
+          _userNameController.text,
+          _emailController.text,
+          _passwordController.text,
+          _birthDate,
+          _locationController.text,
         );
   }
 
