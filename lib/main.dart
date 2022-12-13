@@ -57,6 +57,11 @@ class SharedToDoApp extends StatelessWidget {
                 displayColor: const Color(0xFF001E1D),
                 bodyColor: const Color(0xFF001E1D),
               ),
+          inputDecorationTheme: const InputDecorationTheme(
+            border: OutlineInputBorder(),
+            contentPadding: EdgeInsets.all(12),
+            isDense: true,
+          ),
         ),
       ),
     );

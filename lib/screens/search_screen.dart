@@ -26,7 +26,6 @@ class SearchScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(100),
               borderSide: BorderSide.none,
             ),
-            isDense: true,
             contentPadding:
                 const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
             filled: true,
