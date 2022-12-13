@@ -14,18 +14,19 @@ class AuthProvider with ChangeNotifier {
     final loggedInUserUidStream = userApi.getLoggedInUserUidStream();
     loggedInUserUidStream.listen(
       (loggedInUserUid) {
-        if (loggedInUserUid != null) {
-          final loggedInUserStream =
-              userApi.getUserInfoStreamOf(loggedInUserUid);
-
-          _loggedInUserSubscription?.cancel();
-
-          _loggedInUserSubscription =
-              loggedInUserStream?.listen((loggedInUser) {
-            this.loggedInUser = loggedInUser;
-            notifyListeners();
-          });
+        if (loggedInUserUid == null) {
+          loggedInUser = null;
+          notifyListeners();
+          return;
         }
+
+        final loggedInUserStream = userApi.getUserInfoStreamOf(loggedInUserUid);
+
+        _loggedInUserSubscription?.cancel();
+        _loggedInUserSubscription = loggedInUserStream?.listen((loggedInUser) {
+          this.loggedInUser = loggedInUser;
+          notifyListeners();
+        });
       },
     );
   }

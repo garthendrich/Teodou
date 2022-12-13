@@ -9,13 +9,7 @@ class UserApi {
 
   Stream<String?> getLoggedInUserUidStream() {
     final loggedInUserStream = auth.authStateChanges();
-
-    final loggedInUserUidStream = loggedInUserStream.map((user) {
-      if (user != null) {
-        return user.uid;
-      }
-    });
-
+    final loggedInUserUidStream = loggedInUserStream.map((user) => user?.uid);
     return loggedInUserUidStream;
   }
 
