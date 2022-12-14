@@ -12,6 +12,8 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  final _signUpFormKey = GlobalKey<FormState>();
+
   final TextEditingController _firstNameController = TextEditingController();
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _userNameController = TextEditingController();
@@ -25,25 +27,32 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: ListView(
-          shrinkWrap: true,
-          padding: const EdgeInsets.all(32),
-          children: [
-            const Text(
-              "Sign Up",
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 24),
-            ),
-            const SizedBox(height: 16),
-            _buildFullNameFields(),
-            _buildUserNameField(),
-            _buildEmailField(),
-            _buildPasswordField(),
-            _buildBirthDateFields(),
-            _buildLocationField(),
-            _buildSignUpButton(),
-            _buildBackButton()
-          ],
+        child: Form(
+          key: _signUpFormKey,
+          child: ListView(
+            shrinkWrap: true,
+            padding: const EdgeInsets.all(32),
+            children: [
+              const Text(
+                "Sign Up",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 24),
+              ),
+              const SizedBox(height: 8),
+              _buildFullNameFields(),
+              _buildUserNameField(),
+              _buildEmailField(),
+              _buildPasswordField(),
+              _buildLocationField(),
+              _buildBirthDateFields(),
+              _buildButtons()
+            ].map((child) {
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 12),
+                child: child,
+              );
+            }).toList(),
+          ),
         ),
       ),
     );
@@ -53,15 +62,29 @@ class _SignUpPageState extends State<SignUpPage> {
     return Row(
       children: [
         Expanded(
-          child: TextField(
+          child: TextFormField(
             controller: _firstNameController,
+            validator: (firstName) {
+              if (firstName == null || firstName.isEmpty) {
+                return "This field is required";
+              }
+
+              return null;
+            },
             decoration: const InputDecoration(labelText: "First name"),
           ),
         ),
         const SizedBox(width: 16),
         Expanded(
-          child: TextField(
+          child: TextFormField(
             controller: _lastNameController,
+            validator: (lastName) {
+              if (lastName == null || lastName.isEmpty) {
+                return "This field is required";
+              }
+
+              return null;
+            },
             decoration: const InputDecoration(labelText: "Last name"),
           ),
         ),
@@ -70,72 +93,108 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   Widget _buildUserNameField() {
-    return TextField(
+    return TextFormField(
       controller: _userNameController,
-      decoration: const InputDecoration(
-        labelText: "Username",
-      ),
+      validator: (userName) {
+        if (userName == null || userName.isEmpty) {
+          return "This field is required";
+        }
+
+        return null;
+      },
+      decoration: const InputDecoration(labelText: "Username"),
     );
   }
 
   Widget _buildEmailField() {
-    return TextField(
+    return TextFormField(
       controller: _emailController,
-      decoration: const InputDecoration(
-        labelText: "Email",
-      ),
+      validator: (email) {
+        if (email == null || email.isEmpty) {
+          return "This field is required";
+        }
+
+        return null;
+      },
+      decoration: const InputDecoration(labelText: "Email"),
     );
   }
 
   Widget _buildPasswordField() {
-    return TextField(
+    return TextFormField(
       controller: _passwordController,
+      validator: (password) {
+        if (password == null || password.isEmpty) {
+          return "This field is required";
+        }
+
+        if (password.length < 8) {
+          return "Password must be at least 8 characters long";
+        }
+
+        if (!_isValidPassword(password)) {
+          return "Password must contain at least one lowercase, uppercase, numeric, and special character";
+        }
+
+        return null;
+      },
       obscureText: true,
-      decoration: const InputDecoration(
-        labelText: "Password",
-      ),
+      decoration: const InputDecoration(labelText: "Password"),
     );
   }
 
+  _isValidPassword(String password) {
+    final hasLowerCaseCharacter = password.toUpperCase() != password;
+    final hasUpperCaseCharacter = password.toLowerCase() != password;
+    final hasNumericCharacter = RegExp(r"\d").hasMatch(password);
+    final hasSpecialCharacter =
+        RegExp(r"""[~`!@#%&_=:;'",<>/\$\^\*\(\)\-\+\[\]\{\}\|\\\.\?]""")
+            .hasMatch(password);
+
+    return hasLowerCaseCharacter &&
+        hasUpperCaseCharacter &&
+        hasNumericCharacter &&
+        hasSpecialCharacter;
+  }
+
   Widget _buildBirthDateFields() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text("Birthdate"),
-          DateSelect(
-            onChanged: (birthDate) {
-              setState(() => _birthDate = birthDate);
-            },
-          ),
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text("Birthdate", style: TextStyle(color: Colors.grey[600])),
+        DateSelect(
+          onChanged: (birthDate) => setState(() => _birthDate = birthDate),
+        ),
+      ],
     );
   }
 
   Widget _buildLocationField() {
-    return TextField(
+    return TextFormField(
       controller: _locationController,
-      decoration: const InputDecoration(
-        labelText: "Location",
-      ),
+      decoration: const InputDecoration(labelText: "Location"),
+    );
+  }
+
+  Widget _buildButtons() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [_buildSignUpButton(), _buildBackButton()],
     );
   }
 
   Widget _buildSignUpButton() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 24),
-      child: ElevatedButton(
-        onPressed: () {
+    return ElevatedButton(
+      onPressed: () {
+        if (_signUpFormKey.currentState!.validate()) {
           _signUp().then((_) {
             if (context.read<AuthProvider>().isAuthenticated) {
               Navigator.pop(context);
             }
           });
-        },
-        child: const Text("Create account"),
-      ),
+        }
+      },
+      child: const Text("Create account"),
     );
   }
 
@@ -152,14 +211,9 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   Widget _buildBackButton() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 8),
-      child: TextButton(
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        child: const Text("Already have an account"),
-      ),
+    return TextButton(
+      onPressed: () => Navigator.pop(context),
+      child: const Text("Already have an account"),
     );
   }
 }
