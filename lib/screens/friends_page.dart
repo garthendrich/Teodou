@@ -123,7 +123,7 @@ class FriendsPage extends StatelessWidget {
             leading: const Icon(Icons.person_remove),
             iconColor: Colors.red,
             onTap: () {
-              // context.read<AuthProvider>().unfriend(friend.id);
+              context.read<AuthProvider>().unfriend(friend);
               Navigator.pop(context);
             },
           ),
