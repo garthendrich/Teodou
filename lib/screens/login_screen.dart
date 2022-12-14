@@ -95,6 +95,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _buildSignInButton() {
     return ElevatedButton(
+      key: const Key("login-button"),
       onPressed: () async {
         setState(() => _submitErrorMessage = null);
 
@@ -106,7 +107,7 @@ class _LoginPageState extends State<LoginPage> {
           setState(() => _submitErrorMessage = submitErrorMessage);
         }
       },
-      child: const Text("Sign In"),
+      child: const Text("Log In"),
     );
   }
 
