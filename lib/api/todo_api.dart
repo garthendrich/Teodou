@@ -3,7 +3,11 @@ import "package:cloud_firestore/cloud_firestore.dart";
 import "package:shared_todo_app/models/todo_model.dart";
 
 class ToDoApi {
-  final db = FirebaseFirestore.instance;
+  late final FirebaseFirestore db;
+
+  ToDoApi({fakeFirestoreDb}) {
+    db = fakeFirestoreDb ?? FirebaseFirestore.instance;
+  }
 
   Stream<List<ToDo>>? getAllToDosOf(String userId) {
     try {
@@ -11,9 +15,9 @@ class ToDoApi {
           db.collection("todos").where("userId", isEqualTo: userId).snapshots();
 
       final userToDosStream = userToDosSnapshotStream.map((userToDosSnapshot) {
-        return userToDosSnapshot.docs
-            .map((doc) => ToDo.fromJson(doc.data()))
-            .toList();
+        return userToDosSnapshot.docs.map((doc) {
+          return ToDo.fromJson(doc.data());
+        }).toList();
       });
 
       return userToDosStream;

@@ -4,8 +4,8 @@ import "package:firebase_auth/firebase_auth.dart";
 import "package:shared_todo_app/models/user_info_model.dart" as user_info_model;
 
 class UserApi {
-  late FirebaseFirestore db;
-  late FirebaseAuth auth;
+  late final FirebaseFirestore db;
+  late final FirebaseAuth auth;
 
   UserApi({fakeFirestoreDb, fakeFirebaseAuth}) {
     db = fakeFirestoreDb ?? FirebaseFirestore.instance;

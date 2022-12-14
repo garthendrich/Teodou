@@ -4,8 +4,12 @@ import "package:shared_todo_app/api/todo_api.dart";
 import "package:shared_todo_app/models/todo_model.dart";
 
 class ToDosProvider with ChangeNotifier {
-  ToDoApi toDoApi = ToDoApi();
+  late final ToDoApi toDoApi;
   Stream<List<ToDo>>? toDosStream;
+
+  ToDosProvider({fakeFirestoreDb}) {
+    toDoApi = ToDoApi(fakeFirestoreDb: fakeFirestoreDb);
+  }
 
   void fetchToDosOf(String userId) {
     toDosStream = toDoApi.getAllToDosOf(userId);
