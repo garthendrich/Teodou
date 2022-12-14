@@ -35,15 +35,15 @@ class AuthProvider with ChangeNotifier {
     return loggedInUser != null;
   }
 
-  Future signIn(String email, String password) async {
-    await userApi.signIn(email, password);
+  Future<String?> signIn(String email, String password) async {
+    return await userApi.signIn(email, password);
   }
 
   Future signOut() async {
     await userApi.signOut();
   }
 
-  Future signUp(
+  Future<String?> signUp(
     String firstName,
     String lastName,
     String userName,

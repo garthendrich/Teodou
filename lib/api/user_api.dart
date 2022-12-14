@@ -54,20 +54,21 @@ class UserApi {
     return null;
   }
 
-  Future signIn(String email, String password) async {
+  Future<String?> signIn(String email, String password) async {
     try {
       await auth.signInWithEmailAndPassword(email: email, password: password);
     } on FirebaseAuthException catch (error) {
-      print(error.code);
-      print(error.message);
+      return error.message;
     }
+
+    return null;
   }
 
   Future signOut() async {
     await auth.signOut();
   }
 
-  Future signUp(
+  Future<String?> signUp(
     String firstName,
     String lastName,
     String userName,
@@ -108,6 +109,8 @@ class UserApi {
     } on FirebaseAuthException catch (error) {
       print("Error saving user: [${error.code}] ${error.message}");
     }
+
+    return null;
   }
 
   Future saveUserToFirestore(

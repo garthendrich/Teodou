@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:provider/provider.dart";
+import "package:shared_todo_app/components/error_message.dart";
 
 import "package:shared_todo_app/providers/auth_provider.dart";
 import "package:shared_todo_app/screens/sign_up_screen.dart";
@@ -12,35 +13,56 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  final _loginFormKey = GlobalKey<FormState>();
+
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  String? _submitErrorMessage;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: ListView(
-          shrinkWrap: true,
-          padding: const EdgeInsets.all(32),
-          children: [
-            const Text(
-              "Log In",
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 24),
-            ),
-            _buildEmailField(),
-            _buildPasswordField(),
-            _buildSignInButton(),
-            _buildSignUpButton(),
-          ],
+        child: Form(
+          key: _loginFormKey,
+          child: ListView(
+            shrinkWrap: true,
+            padding: const EdgeInsets.all(32),
+            children: [
+              const Text(
+                "Log In",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 24),
+              ),
+              const SizedBox(height: 8),
+              _buildEmailField(),
+              _buildPasswordField(),
+              if (_submitErrorMessage != null)
+                ErrorMessage(message: _submitErrorMessage!),
+              _buildActionButtons(),
+            ].map((child) {
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 12),
+                child: child,
+              );
+            }).toList(),
+          ),
         ),
       ),
     );
   }
 
   Widget _buildEmailField() {
-    return TextField(
-      controller: emailController,
+    return TextFormField(
+      controller: _emailController,
+      validator: (email) {
+        if (email == null || email.isEmpty) {
+          return "This field is required";
+        }
+
+        return null;
+      },
       decoration: const InputDecoration(
         hintText: "Email",
       ),
@@ -48,8 +70,19 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _buildPasswordField() {
-    return TextField(
-      controller: passwordController,
+    return TextFormField(
+      controller: _passwordController,
+      validator: (password) {
+        if (password == null || password.isEmpty) {
+          return "This field is required";
+        }
+
+        if (password.length < 8) {
+          return "Password must be at least 8 characters long";
+        }
+
+        return null;
+      },
       obscureText: true,
       decoration: const InputDecoration(
         hintText: "Password",
@@ -57,31 +90,38 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  Widget _buildActionButtons() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [_buildSignInButton(), _buildSignUpButton()],
+    );
+  }
+
   Widget _buildSignInButton() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 24),
-      child: ElevatedButton(
-        onPressed: () {
-          context
+    return ElevatedButton(
+      onPressed: () async {
+        setState(() => _submitErrorMessage = null);
+
+        if (_loginFormKey.currentState!.validate()) {
+          final submitErrorMessage = await context
               .read<AuthProvider>()
-              .signIn(emailController.text, passwordController.text);
-        },
-        child: const Text("Sign In"),
-      ),
+              .signIn(_emailController.text, _passwordController.text);
+
+          setState(() => _submitErrorMessage = submitErrorMessage);
+        }
+      },
+      child: const Text("Sign In"),
     );
   }
 
   Widget _buildSignUpButton() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 8),
-      child: TextButton(
-        onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => const SignUpPage()),
-          );
-        },
-        child: const Text("Create an account"),
-      ),
+    return TextButton(
+      onPressed: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => const SignUpPage()),
+        );
+      },
+      child: const Text("Create an account"),
     );
   }
 }
