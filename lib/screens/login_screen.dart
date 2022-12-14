@@ -77,10 +77,6 @@ class _LoginPageState extends State<LoginPage> {
           return "This field is required";
         }
 
-        if (password.length < 8) {
-          return "Password must be at least 8 characters long";
-        }
-
         return null;
       },
       obscureText: true,
