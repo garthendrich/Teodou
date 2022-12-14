@@ -52,7 +52,7 @@ class AuthProvider with ChangeNotifier {
     DateTime birthDate,
     String location,
   ) async {
-    await userApi.signUp(
+    return await userApi.signUp(
       firstName,
       lastName,
       userName,

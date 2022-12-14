@@ -76,32 +76,37 @@ class UserApi {
     DateTime birthDate,
     String location,
   ) async {
+    UserCredential userCredential;
+
     try {
-      final credential = await auth.createUserWithEmailAndPassword(
+      userCredential = await auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
+    } on FirebaseAuthException catch (error) {
+      return error.message;
+    }
 
-      final userId = credential.user!.uid;
+    final userId = userCredential.user!.uid;
 
-      final newUser = user_info_model.UserInfo(
-        uid: userId,
-        firstName: firstName,
-        lastName: lastName,
-        userName: userName,
-        biography: "",
-        birthDate: birthDate,
-        location: location,
-        email: email,
-        friendsIds: [],
-        receivedFriendRequestsIds: [],
-        sentFriendRequestsIds: [],
-      );
+    final newUser = user_info_model.UserInfo(
+      uid: userId,
+      firstName: firstName,
+      lastName: lastName,
+      userName: userName,
+      biography: "",
+      birthDate: birthDate,
+      location: location,
+      email: email,
+      friendsIds: [],
+      receivedFriendRequestsIds: [],
+      sentFriendRequestsIds: [],
+    );
 
+    try {
       await saveUserToFirestore(userId, newUser);
     } on FirebaseAuthException catch (error) {
-      print(error.code);
-      print(error.message);
+      print("Error saving user: [${error.code}] ${error.message}");
     }
   }
 

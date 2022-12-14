@@ -23,6 +23,8 @@ class _SignUpPageState extends State<SignUpPage> {
 
   DateTime _birthDate = DateTime.now();
 
+  String? _submitErrorMessage;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,7 +47,8 @@ class _SignUpPageState extends State<SignUpPage> {
               _buildPasswordField(),
               _buildLocationField(),
               _buildBirthDateFields(),
-              _buildButtons()
+              if (_submitErrorMessage != null) _buildErrorMessage(),
+              _buildActionButtons()
             ].map((child) {
               return Padding(
                 padding: const EdgeInsets.only(bottom: 12),
@@ -176,7 +179,20 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-  Widget _buildButtons() {
+  Widget _buildErrorMessage() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.red[50],
+        border: Border.all(color: Colors.red.shade800),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child:
+          Text(_submitErrorMessage!, style: TextStyle(color: Colors.red[800])),
+    );
+  }
+
+  Widget _buildActionButtons() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [_buildSignUpButton(), _buildBackButton()],
@@ -186,6 +202,8 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget _buildSignUpButton() {
     return ElevatedButton(
       onPressed: () {
+        setState(() => _submitErrorMessage = null);
+
         if (_signUpFormKey.currentState!.validate()) {
           _signUp().then((_) {
             if (context.read<AuthProvider>().isAuthenticated) {
@@ -199,7 +217,7 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   _signUp() async {
-    await context.read<AuthProvider>().signUp(
+    final submitErrorMessage = await context.read<AuthProvider>().signUp(
           _firstNameController.text,
           _lastNameController.text,
           _userNameController.text,
@@ -208,6 +226,8 @@ class _SignUpPageState extends State<SignUpPage> {
           _birthDate,
           _locationController.text,
         );
+
+    setState(() => _submitErrorMessage = submitErrorMessage);
   }
 
   Widget _buildBackButton() {
