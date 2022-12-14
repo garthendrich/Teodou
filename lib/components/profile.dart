@@ -26,8 +26,11 @@ class Profile extends StatelessWidget {
           ),
           Text("@${user.userName}"),
           const SizedBox(height: 24),
-          Text(user.biography),
-          const SizedBox(height: 24),
+          if (user.biography.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 24),
+              child: Text(user.biography),
+            ),
           Column(
             children: userDetails
                 .map(
