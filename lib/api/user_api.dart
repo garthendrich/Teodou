@@ -110,7 +110,7 @@ class UserApi {
     );
 
     try {
-      await saveUserToFirestore(userId, newUser);
+      await saveUserToFirestore(newUser);
     } on FirebaseAuthException catch (error) {
       print("Error saving user: [${error.code}] ${error.message}");
     }
@@ -118,12 +118,9 @@ class UserApi {
     return null;
   }
 
-  Future saveUserToFirestore(
-    String userId,
-    user_info_model.UserInfo newUser,
-  ) async {
+  Future saveUserToFirestore(user_info_model.UserInfo newUser) async {
     try {
-      await db.collection("users").doc(userId).set(newUser.toJson());
+      await db.collection("users").doc(newUser.uid).set(newUser.toJson());
     } on FirebaseException catch (error) {
       print(error.code);
       print(error.message);
