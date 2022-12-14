@@ -28,6 +28,8 @@ I wanted to add shadows to the to-do items but a ListTile widget does not have a
 
 I tried making a widget test where logging in with a wrong password must display an error message. However, the test fails even though I think I'm doing things right. By thorough debugging, I have found out that with the mock firebase authentication, entering a wrong password would still result to a successful login. This is when I have discovered that for the said authentication package, errors are raised manually.
 
+Most of the problems that I have faced revolves around streams as it can get quite tricky sometimes especially with complex data and operations.
+
 ## Test cases
 
 ### Happy paths
@@ -40,4 +42,8 @@ I tried making a widget test where logging in with a wrong password must display
 
 &nbsp; :heavy_check_mark: Prevent trying to log-in without filling up the input fields.
 
-&nbsp; :heavy_check_mark: Show error messages with logging-in.
+&nbsp; :heavy_check_mark: Prevent trying to sign-up without filling up the input fields.
+
+&nbsp; :heavy_check_mark: Show Firebase Authentication error messages with logging-in.
+
+&nbsp; :heavy_check_mark: Prompt invalid password.
