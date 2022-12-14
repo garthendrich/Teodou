@@ -162,6 +162,20 @@ class _SignUpPageState extends State<SignUpPage> {
         hasSpecialCharacter;
   }
 
+  Widget _buildLocationField() {
+    return TextFormField(
+      controller: _locationController,
+      validator: (location) {
+        if (location == null || location.isEmpty) {
+          return "This field is required";
+        }
+
+        return null;
+      },
+      decoration: const InputDecoration(labelText: "Location"),
+    );
+  }
+
   Widget _buildBirthDateFields() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -171,13 +185,6 @@ class _SignUpPageState extends State<SignUpPage> {
           onChanged: (birthDate) => setState(() => _birthDate = birthDate),
         ),
       ],
-    );
-  }
-
-  Widget _buildLocationField() {
-    return TextFormField(
-      controller: _locationController,
-      decoration: const InputDecoration(labelText: "Location"),
     );
   }
 
