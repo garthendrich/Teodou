@@ -14,13 +14,16 @@ void main() {
       ),
     );
 
-    final emailField = find.text("Email");
-    final passwordField = find.text("Password");
+    final emailField = find.byKey(const Key("email-field"));
+    final passwordField = find.byKey(const Key("password-field"));
     final loginButton = find.byKey(const Key("login-button"));
 
     expect(emailField, findsOneWidget);
     expect(passwordField, findsOneWidget);
     expect(loginButton, findsOneWidget);
+
+    await tester.enterText(emailField, "");
+    await tester.enterText(passwordField, "");
 
     await tester.tap(loginButton);
     await tester.pump();

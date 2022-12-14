@@ -55,6 +55,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _buildEmailField() {
     return TextFormField(
+      key: const Key("email-field"),
       controller: _emailController,
       validator: (email) {
         if (email == null || email.isEmpty) {
@@ -71,6 +72,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _buildPasswordField() {
     return TextFormField(
+      key: const Key("password-field"),
       controller: _passwordController,
       validator: (password) {
         if (password == null || password.isEmpty) {
