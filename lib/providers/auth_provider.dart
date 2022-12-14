@@ -7,7 +7,7 @@ import "package:shared_todo_app/models/user_info_model.dart";
 
 class AuthProvider with ChangeNotifier {
   late final UserApi userApi;
-  StreamSubscription<UserInfo>? _loggedInUserSubscription;
+  StreamSubscription<UserInfo?>? _loggedInUserSubscription;
   UserInfo? loggedInUser;
 
   AuthProvider({fakeFirestoreDb, fakeFirebaseAuth}) {

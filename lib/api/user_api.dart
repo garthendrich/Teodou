@@ -18,13 +18,18 @@ class UserApi {
     return loggedInUserUidStream;
   }
 
-  Stream<user_info_model.UserInfo>? getUserInfoStreamOf(String userUid) {
+  Stream<user_info_model.UserInfo?>? getUserInfoStreamOf(String userUid) {
     try {
       final userInfoSnapshotStream =
           db.collection("users").doc(userUid).snapshots();
 
       final userInfoStream = userInfoSnapshotStream.map((userInfoSnapshot) {
-        return user_info_model.UserInfo.fromJson(userInfoSnapshot.data()!);
+        final userInfoJson = userInfoSnapshot.data();
+        if (userInfoJson != null) {
+          return user_info_model.UserInfo.fromJson(userInfoJson);
+        }
+
+        return null;
       });
 
       return userInfoStream;
