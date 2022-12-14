@@ -4,8 +4,13 @@ import "package:firebase_auth/firebase_auth.dart";
 import "package:shared_todo_app/models/user_info_model.dart" as user_info_model;
 
 class UserApi {
-  final db = FirebaseFirestore.instance;
-  final auth = FirebaseAuth.instance;
+  late FirebaseFirestore db;
+  late FirebaseAuth auth;
+
+  UserApi({fakeFirestoreDb, fakeFirebaseAuth}) {
+    db = fakeFirestoreDb ?? FirebaseFirestore.instance;
+    auth = fakeFirebaseAuth ?? FirebaseAuth.instance;
+  }
 
   Stream<String?> getLoggedInUserUidStream() {
     final loggedInUserStream = auth.authStateChanges();
