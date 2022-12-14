@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 import "package:provider/provider.dart";
 
 import "package:shared_todo_app/components/date_select.dart";
+import "package:shared_todo_app/components/error_message.dart";
 import "package:shared_todo_app/providers/auth_provider.dart";
 
 class SignUpPage extends StatefulWidget {
@@ -47,7 +48,8 @@ class _SignUpPageState extends State<SignUpPage> {
               _buildPasswordField(),
               _buildLocationField(),
               _buildBirthDateFields(),
-              if (_submitErrorMessage != null) _buildErrorMessage(),
+              if (_submitErrorMessage != null)
+                ErrorMessage(message: _submitErrorMessage!),
               _buildActionButtons()
             ].map((child) {
               return Padding(
@@ -176,19 +178,6 @@ class _SignUpPageState extends State<SignUpPage> {
     return TextFormField(
       controller: _locationController,
       decoration: const InputDecoration(labelText: "Location"),
-    );
-  }
-
-  Widget _buildErrorMessage() {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.red[50],
-        border: Border.all(color: Colors.red.shade800),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child:
-          Text(_submitErrorMessage!, style: TextStyle(color: Colors.red[800])),
     );
   }
 
