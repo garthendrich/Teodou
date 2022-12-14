@@ -30,12 +30,15 @@ class ToDosList extends StatelessWidget {
       itemName: "to-do",
       itemBuilder: (toDo) => _buildToDoTile(context, toDo),
       itemsFilterHelper: (toDos, query) {
-        return toDos
-            .where(
-              (ToDo toDo) =>
-                  toDo.title.toLowerCase().contains(query.toLowerCase()),
-            )
-            .toList();
+        return toDos.where((ToDo toDo) {
+          final matchesTitle =
+              toDo.title.toLowerCase().contains(query.toLowerCase());
+
+          final matchesDescription =
+              toDo.description.toLowerCase().contains(query.toLowerCase());
+
+          return matchesTitle || matchesDescription;
+        }).toList();
       },
     );
   }
