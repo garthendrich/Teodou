@@ -73,6 +73,40 @@ void main() async {
   });
 
   // Unhappy path
+  testWidgets("sign-up with empty fields", (WidgetTester tester) async {
+    await renderSignUpPage(tester);
+
+    final firstNameField = find.byKey(const Key("first-name-field"));
+    final lastNameField = find.byKey(const Key("last-name-field"));
+    final userNameField = find.byKey(const Key("user-name-field"));
+    final emailField = find.byKey(const Key("email-field"));
+    final passwordField = find.byKey(const Key("password-field"));
+    final locationField = find.byKey(const Key("location-field"));
+    final signUpButton = find.byKey(const Key("sign-up-button"));
+
+    expect(firstNameField, findsOneWidget);
+    expect(lastNameField, findsOneWidget);
+    expect(userNameField, findsOneWidget);
+    expect(emailField, findsOneWidget);
+    expect(passwordField, findsOneWidget);
+    expect(locationField, findsOneWidget);
+    expect(signUpButton, findsOneWidget);
+
+    await tester.enterText(firstNameField, "");
+    await tester.enterText(lastNameField, "");
+    await tester.enterText(userNameField, "");
+    await tester.enterText(emailField, "");
+    await tester.enterText(passwordField, "");
+    await tester.enterText(locationField, "");
+
+    await tester.tap(signUpButton);
+    await tester.pump();
+
+    final errorMessageTexts = find.text("This field is required");
+    expect(errorMessageTexts, findsNWidgets(6));
+  });
+
+  // Unhappy path
   testWidgets("sign-up with unmet password requirements",
       (WidgetTester tester) async {
     await renderSignUpPage(tester);
@@ -93,8 +127,7 @@ void main() async {
     expect(locationField, findsOneWidget);
     expect(signUpButton, findsOneWidget);
 
-    const mockUserFirstName = "Seungyoun";
-    await tester.enterText(firstNameField, mockUserFirstName);
+    await tester.enterText(firstNameField, "Seungyoun");
     await tester.enterText(lastNameField, "Cho");
     await tester.enterText(userNameField, "woodz_dnwm");
     await tester.enterText(emailField, "woodz_dnwm@gmail.com");
