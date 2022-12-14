@@ -68,6 +68,7 @@ class _SignUpPageState extends State<SignUpPage> {
       children: [
         Expanded(
           child: TextFormField(
+            key: const Key("first-name-field"),
             controller: _firstNameController,
             validator: (firstName) {
               if (firstName == null || firstName.isEmpty) {
@@ -82,6 +83,7 @@ class _SignUpPageState extends State<SignUpPage> {
         const SizedBox(width: 16),
         Expanded(
           child: TextFormField(
+            key: const Key("last-name-field"),
             controller: _lastNameController,
             validator: (lastName) {
               if (lastName == null || lastName.isEmpty) {
@@ -99,6 +101,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Widget _buildUserNameField() {
     return TextFormField(
+      key: const Key("user-name-field"),
       controller: _userNameController,
       validator: (userName) {
         if (userName == null || userName.isEmpty) {
@@ -113,6 +116,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Widget _buildEmailField() {
     return TextFormField(
+      key: const Key("email-field"),
       controller: _emailController,
       validator: (email) {
         if (email == null || email.isEmpty) {
@@ -127,6 +131,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Widget _buildPasswordField() {
     return TextFormField(
+      key: const Key("password-field"),
       controller: _passwordController,
       validator: (password) {
         if (password == null || password.isEmpty) {
@@ -164,6 +169,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Widget _buildLocationField() {
     return TextFormField(
+      key: const Key("location-field"),
       controller: _locationController,
       validator: (location) {
         if (location == null || location.isEmpty) {
@@ -197,6 +203,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Widget _buildSignUpButton() {
     return ElevatedButton(
+      key: const Key("sign-up-button"),
       onPressed: () {
         setState(() => _submitErrorMessage = null);
 

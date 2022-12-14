@@ -115,6 +115,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _buildSignUpButton() {
     return TextButton(
+      key: const Key("sign-up-page-button"),
       onPressed: () {
         Navigator.of(context).push(
           MaterialPageRoute(builder: (context) => const SignUpPage()),

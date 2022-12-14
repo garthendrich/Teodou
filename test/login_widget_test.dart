@@ -32,7 +32,7 @@ void main() async {
       .doc(mockUser.uid)
       .set(mockUserInfo.toJson());
 
-  Widget buildLoginWidget(
+  Widget buildAuthWrapper(
     FakeFirebaseFirestore fakeFirestoreDb,
     MockFirebaseAuth fakeFirebaseAuth,
   ) {
@@ -57,7 +57,7 @@ void main() async {
     final fakeFirebaseAuth = MockFirebaseAuth(mockUser: mockUser);
 
     await tester.pumpWidget(
-      buildLoginWidget(fakeFirestoreDb, fakeFirebaseAuth),
+      buildAuthWrapper(fakeFirestoreDb, fakeFirebaseAuth),
     );
 
     final emailField = find.byKey(const Key("email-field"));
@@ -83,7 +83,7 @@ void main() async {
     final fakeFirebaseAuth = MockFirebaseAuth();
 
     await tester.pumpWidget(
-      buildLoginWidget(fakeFirestoreDb, fakeFirebaseAuth),
+      buildAuthWrapper(fakeFirestoreDb, fakeFirebaseAuth),
     );
 
     final emailField = find.byKey(const Key("email-field"));
@@ -116,7 +116,7 @@ void main() async {
     );
 
     await tester.pumpWidget(
-      buildLoginWidget(fakeFirestoreDb, fakeFirebaseAuth),
+      buildAuthWrapper(fakeFirestoreDb, fakeFirebaseAuth),
     );
 
     final emailField = find.byKey(const Key("email-field"));
