@@ -5,8 +5,4 @@
 
 ## Sample preview
 
-<img src="docs/images/home.png" width="300px" />
-<img src="docs/images/friends.png" width="300px" />
-<img src="docs/images/search.png" width="300px" />
-<img src="docs/images/profile.png" width="300px" />
-<img src="docs/images/sign_up.png" width="300px" />
+<img src="docs/images/home.png" width="300px" /> <img src="docs/images/friends.png" width="300px" /> <img src="docs/images/search.png" width="300px" /> <img src="docs/images/profile.png" width="300px" /> <img src="docs/images/sign_up.png" width="300px" />
